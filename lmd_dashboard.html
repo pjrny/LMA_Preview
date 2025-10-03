@@ -226,7 +226,7 @@ const HeaderCard = ({ title, value, icon: Icon, colorClass, children, small = fa
   </div>
 );
 
-const VerificationSteps = ({ currentLevel, onSelfieUpload, onCVUpload }) => (
+const VerificationSteps = ({ currentLevel, onSelfieUpload, onCVUpload, setVerificationLevel, VERIFICATION_LEVELS }) => (
     <div className="pt-2">
         <h4 className="text-sm font-medium text-gray-400 mb-2 uppercase">Verification Progress ({currentLevel}/{VERIFICATION_LEVELS.length - 1})</h4>
         <ul className="space-y-1 text-xs max-h-48 overflow-y-auto pr-2">
@@ -1437,6 +1437,8 @@ The person in the visualization should look like the user in the provided photo.
                 currentLevel={verificationLevel} 
                 onSelfieUpload={handleSelfieUpload} 
                 onCVUpload={handleCVUpload}
+                setVerificationLevel={setVerificationLevel}
+                VERIFICATION_LEVELS={VERIFICATION_LEVELS}
               />
             </HeaderCard>
           </div>
@@ -1604,4 +1606,3 @@ root.render(<App />);
     </script>
 </body>
 </html>
-
