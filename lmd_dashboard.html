@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Likeness Monetization Agent (LMA) Dashboard</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load React and Babel -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Firebase SDKs for React -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <style>
-        /* Optional custom styles for better aesthetics */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Dark background */
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Likeness Monetization Agent (LMA) Dashboard</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load React and Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Firebase SDKs for React -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <style>
+        /* Optional custom styles for better aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark background */
+        }
+    </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root"></div>
 
-    <script type="text/babel">
-        // Global variables must be defined before the React component uses them.
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    <script type="text/babel">
+        // Global variables must be defined before the React component uses them.
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
-        // --- Start of Pasted LikenessAgentDashboard.jsx Code ---
+        // --- Start of Pasted LikenessAgentDashboard.jsx Code ---
 
 // NOTE: Placeholder for the user's uploaded selfie (Base64 encoded JPEG/PNG). 
 const MOCK_SELFIE_BASE64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
@@ -64,1188 +64,1544 @@ const Briefcase = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" 
 const Link = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
 const MessageSquare = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
 const PawPrint = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="9" r="3"/><circle cx="19" cy="20" r="3"/><path d="M11 7V4c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v3"/><path d="M14 11V8m-3 3 1.5 1.5"/></svg>;
+const Mail = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 7L2 7"/></svg>;
+const FileText = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H9a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/><path d="M10 9h4"/><path d="M10 13h4"/><path d="M10 17h2"/></svg>;
+
 
 // --- File Reading Helpers ---
 const readBase64Image = (file) => {
-    return new Promise((resolve, reject) => {
-        if (!file) return reject(new Error("No file selected."));
-        const reader = new FileReader();
-        reader.onload = () => {
-            // Extract Base64 data part (after comma)
-            const base64String = reader.result.split(',')[1];
-            resolve(base64String);
-        };
-        reader.onerror = error => reject(error);
-        reader.readAsDataURL(file);
-    });
+    return new Promise((resolve, reject) => {
+        if (!file) return reject(new Error("No file selected."));
+        const reader = new FileReader();
+        reader.onload = () => {
+            // Extract Base64 data part (after comma)
+            const base64String = reader.result.split(',')[1];
+            resolve(base64String);
+        };
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
 };
 
 // --- Mock data structure for the six required assets
 const initialAssets = [
-  { 
-    id: 1, 
-    name: "3D Gaming Asset", 
-    marketplace: "Unity Asset Store", 
-    icon: Sword, 
-    status: 'pending', 
-    assetId: 'N/A',
-    isGemini: false,
-    options: { genre: 'sci-fi' } // New option for gaming
-  },
-  { 
-    id: 2, 
-    name: "Stock Image Series (Product Mockup) ?", 
-    marketplace: "Getty Images", 
-    icon: Image, 
-    status: 'pending', 
-    assetId: 'N/A',
-    isGemini: true, // Now Gemini enabled
-    options: { productUploaded: false, productImageBase64: null } // New option for stock image
-  },
-  { 
-    id: 3, 
-    name: "How-To Videos (Yoga/Pilates) ?", // Renamed
-    marketplace: "How-To Video Producer", 
-    icon: Activity, 
-    status: 'pending', 
-    assetId: 'N/A',
-    isGemini: true,
-    options: { sessionType: 'yoga', pace: 'medium' } // Updated options
-  },
-  { 
-    id: 4, 
-    name: "Adult PPV Art (Tattoo + Chat Twin) ?", 
-    marketplace: "Adult Content License", 
-    icon: Zap, 
-    status: 'pending', 
-    assetId: 'N/A',
-    isGemini: true, // ENABLED GEMINI FEATURE
-    options: { tattoosEnabled: false, chatTwinEnabled: false, gender: 'female' } // Re-added gender
-  },
-  { 
-    id: 5, 
-    name: "Animated Pop Star & Music/Video (2 Jobs)", 
-    marketplace: "DistroKid / YouTube Music", 
-    icon: Music, 
-    status: 'pending', 
-    assetId: 'N/A',
-    isGemini: false,
-    options: { playlistLinked: false, genre: 'pop' }
-  },
-  { 
-    id: 6, 
-    name: "Plush Toy Product Mockup ?", 
-    marketplace: "Shopify Marketplace", 
-    icon: ShoppingBag, 
-    status: 'pending', 
-    assetId: 'N/A',
-    isGemini: true // ENABLED GEMINI FEATURE
-  },
-  { 
-    id: 7, 
-    name: "Pet Stock Images (FREE) ?", // New Asset
-    marketplace: "Free Tier / Unsplash", 
-    icon: PawPrint, 
-    status: 'pending', 
-    assetId: 'N/A',
-    options: { petImageUploaded: false, petImageBase64: null } // Requires pet photo upload
-  },
+  { 
+    id: 1, 
+    name: "3D Gaming Asset ✨", 
+    marketplace: "Unity Asset Store", 
+    icon: Sword, 
+    status: 'pending', 
+    assetId: 'N/A',
+    isGemini: true, // Now Gemini enabled
+    options: { genre: 'sci-fi' } // New option for gaming
+  },
+  { 
+    id: 2, 
+    name: "Stock Image Series (Product Mockup) ✨", 
+    marketplace: "Getty Images", 
+    icon: Image, 
+    status: 'pending', 
+    assetId: 'N/A',
+    isGemini: true, 
+    options: { productUploaded: false, productImageBase64: null } // New option for stock image
+  },
+  { 
+    id: 3, 
+    name: "How-To Videos (Yoga/Pilates) ✨", // Renamed
+    marketplace: "How-To Video Producer", 
+    icon: Activity, 
+    status: 'pending', 
+    assetId: 'N/A',
+    isGemini: true,
+    options: { sessionType: 'yoga', pace: 'medium' } // Updated options
+  },
+  { 
+    id: 4, 
+    name: "Adult PPV Art (Tattoo + Chat Twin) ✨", 
+    marketplace: "Adult Content License", 
+    icon: Zap, 
+    status: 'pending', 
+    assetId: 'N/A',
+    isGemini: true, // ENABLED GEMINI FEATURE
+    options: { tattoosEnabled: false, chatTwinEnabled: false, gender: 'female' } // Re-added gender
+  },
+  { 
+    id: 5, 
+    name: "Animated Pop Star & Music/Video (2 Jobs) ✨", 
+    marketplace: "DistroKid / YouTube Music", 
+    icon: Music, 
+    status: 'pending', 
+    assetId: 'N/A',
+    isGemini: true, // Now Gemini enabled
+    options: { playlistLinked: false, genre: 'pop' }
+  },
+  { 
+    id: 6, 
+    name: "Plush Toy Product Mockup ✨", 
+    marketplace: "Shopify Marketplace", 
+    icon: ShoppingBag, 
+    status: 'pending', 
+    assetId: 'N/A',
+    isGemini: true // ENABLED GEMINI FEATURE
+  },
+  { 
+    id: 7, 
+    name: "Pet Stock Images (FREE) ✨", // New Asset
+    marketplace: "Free Tier / Unsplash", 
+    icon: PawPrint, 
+    status: 'pending', 
+    assetId: 'N/A',
+    isGemini: true,
+    options: { petImageUploaded: false, petImageBase64: null } // Requires pet photo upload
+  },
 ];
 
 // Verification Status Levels
 const VERIFICATION_LEVELS = [
-    { level: 0, name: "Unverified", color: "text-gray-400" },
-    { level: 1, name: "Selfie Upload", color: "text-red-400" },
-    { level: 2, name: "Video Scan (Body/Liveness)", color: "text-orange-400" },
-    { level: 3, name: "Government ID/PII", color: "text-yellow-400" },
-    { level: 4, name: "Social Links/PII Dump", color: "text-green-400" },
-    { level: 5, name: "Therapist Session 1", color: "text-teal-400" },
-    { level: 6, name: "Twin Flame Status", color: "text-indigo-400" },
+    { level: 0, name: "Unverified (Sign-up)", color: "text-gray-400", icon: Mail },
+    { level: 1, name: "Email/SMS/Authenticator", color: "text-blue-400", icon: Mail }, // NEW INITIAL STEP
+    { level: 2, name: "Selfie Upload", color: "text-red-400", icon: UserCheck },
+    { level: 3, name: "Video Scan (Body/Liveness)", color: "text-orange-400", icon: Eye },
+    { level: 4, name: "Government ID/PII", color: "text-yellow-400", icon: Shield },
+    { level: 5, name: "CV Upload", color: "text-green-400", icon: FileText }, // NEW STEP
+    { level: 6, name: "Social Links/PII Dump", color: "text-teal-400", icon: Link },
+    { level: 7, name: "Therapist Session 1", color: "text-indigo-400", icon: MessageSquare },
+    { level: 8, name: "Twin Flame Status", color: "text-pink-400", icon: Heart },
 ];
 
 // Helper to define status colors and icons
 const getStatusClasses = (status) => {
-  switch (status) {
-    case 'success':
-      return { 
-        bg: 'bg-green-600/20', 
-        text: 'text-green-400', 
-        icon: CheckCircle, 
-        ring: 'ring-green-500' 
-      };
-    case 'in_progress':
-      return { 
-        bg: 'bg-yellow-600/20', 
-        text: 'text-yellow-400', 
-        icon: Clock, 
-        ring: 'ring-yellow-500' 
-      };
-    case 'failed':
-      return { 
-        bg: 'bg-red-600/20', 
-        text: 'text-red-400', 
-        icon: XCircle, 
-        ring: 'ring-red-500' 
-      };
-    case 'pending':
-    default:
-      return { 
-        bg: 'bg-gray-600/20', 
-        text: 'text-gray-400', 
-        icon: Clock, 
-        ring: 'ring-gray-600' 
-      };
-  }
+  switch (status) {
+    case 'success':
+      return { 
+        bg: 'bg-green-600/20', 
+        text: 'text-green-400', 
+        icon: CheckCircle, 
+        ring: 'ring-green-500' 
+      };
+    case 'in_progress':
+      return { 
+        bg: 'bg-yellow-600/20', 
+        text: 'text-yellow-400', 
+        icon: Clock, 
+        ring: 'ring-yellow-500' 
+      };
+    case 'failed':
+      return { 
+        bg: 'bg-red-600/20', 
+        text: 'text-red-400', 
+        icon: XCircle, 
+        ring: 'ring-red-500' 
+      };
+    case 'browser_agent_upload':
+      return { 
+        bg: 'bg-indigo-600/20', 
+        text: 'text-indigo-400', 
+        icon: Upload, 
+        ring: 'ring-indigo-500' 
+      };
+    case 'pending':
+    default:
+      return { 
+        bg: 'bg-gray-600/20', 
+        text: 'text-gray-400', 
+        icon: Clock, 
+        ring: 'ring-gray-600' 
+      };
+  }
 };
 
 const HeaderCard = ({ title, value, icon: Icon, colorClass, children, small = false }) => (
-  <div className={`bg-gray-800 p-6 rounded-xl shadow-2xl flex flex-col justify-between transition duration-300 ring-1 ring-gray-700 hover:ring-indigo-500 h-full ${small ? 'col-span-1 md:col-span-1' : 'col-span-full'}`}>
-    <div className='flex items-center justify-between'>
-        <p className="text-sm font-medium text-gray-400 uppercase">{title}</p>
-        <div className={`p-2 rounded-full bg-opacity-10`}>
-            <Icon className={`w-5 h-5 ${colorClass}`} />
-        </div>
-    </div>
-    <div className="mt-3">
-        <h3 className={`text-4xl font-extrabold ${colorClass}`}>{value}</h3>
-    </div>
-    {children && <div className="mt-4">{children}</div>}
-  </div>
+  <div className={`bg-gray-800 p-4 rounded-xl shadow-2xl flex flex-col justify-between transition duration-300 ring-1 ring-gray-700 hover:ring-indigo-500 h-full ${small ? 'col-span-1 md:col-span-1' : 'col-span-full'}`}>
+    <div className='flex items-center justify-between'>
+        <p className="text-sm font-medium text-gray-400 uppercase">{title}</p>
+        <div className={`p-2 rounded-full bg-opacity-10`}>
+            <Icon className={`w-5 h-5 ${colorClass}`} />
+        </div>
+    </div>
+    <div className="mt-3">
+        <h3 className={`text-2xl font-extrabold ${colorClass} md:text-3xl`}>{value}</h3>
+    </div>
+    {children && <div className="mt-2 text-sm">{children}</div>}
+  </div>
 );
 
-const VerificationSteps = ({ currentLevel, onSelfieUpload }) => (
-    <div className="pt-2">
-        <h4 className="text-sm font-medium text-gray-400 mb-2 uppercase">Verification Progress ({currentLevel}/{VERIFICATION_LEVELS.length - 1})</h4>
-        <ul className="space-y-1 text-xs max-h-48 overflow-y-auto pr-2">
-            {VERIFICATION_LEVELS.slice(1).map(v => (
-                <li key={v.level} className={`flex items-center justify-between p-1 rounded-md ${v.level <= currentLevel ? 'bg-green-700/30' : 'bg-gray-700/30'}`}>
-                    <span className={v.level <= currentLevel ? 'text-green-300' : 'text-gray-400'}>
-                        {v.name}
-                    </span>
-                    {v.level <= currentLevel ? (
-                        <CheckCircle className="w-4 h-4 text-green-300" />
-                    ) : (
-                        <Clock className="w-4 h-4 text-gray-500" />
-                    )}
-                </li>
-            ))}
-        </ul>
-        <input 
-            type="file" 
-            id="likeness-upload" 
-            className="hidden" 
-            accept="image/*,video/*,.txt,.pdf" 
-            onChange={(e) => {
-                if (e.target.files.length > 0) onSelfieUpload(e.target.files[0]);
-            }}
-        />
-        <label 
-            htmlFor="likeness-upload"
-            className="w-full mt-3 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 flex items-center justify-center cursor-pointer"
-        >
-            <Upload className="w-4 h-4 mr-2"/> Upload Files to Continue
-        </label>
-    </div>
+const VerificationSteps = ({ currentLevel, onSelfieUpload, onCVUpload }) => (
+    <div className="pt-2">
+        <h4 className="text-sm font-medium text-gray-400 mb-2 uppercase">Verification Progress ({currentLevel}/{VERIFICATION_LEVELS.length - 1})</h4>
+        <ul className="space-y-1 text-xs max-h-48 overflow-y-auto pr-2">
+            {VERIFICATION_LEVELS.slice(1).map(v => (
+                <li key={v.level} className={`flex items-center justify-between p-1 rounded-md ${v.level <= currentLevel ? 'bg-green-700/30' : 'bg-gray-700/30'}`}>
+                    <span className={v.level <= currentLevel ? 'text-green-300' : 'text-gray-400'}>
+                        {v.name}
+                    </span>
+                    {v.level <= currentLevel ? (
+                        <CheckCircle className="w-4 h-4 text-green-300" />
+                    ) : (
+                        <Clock className="w-4 h-4 text-gray-500" />
+                    )}
+                </li>
+            ))}
+        </ul>
+        {/* Combined Upload Input */}
+        <input 
+            type="file" 
+            id="likeness-upload" 
+            className="hidden" 
+            accept="image/*,video/*,.txt,.pdf" 
+            onChange={(e) => {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    if (currentLevel === 1) { // Selfie upload is step 2
+                        onSelfieUpload(file);
+                    } else if (currentLevel === 4) { // CV upload is step 5
+                        onCVUpload(file);
+                    } else {
+                        // Advance mock verification level
+                        alert(`File uploaded! Advancing verification level to ${VERIFICATION_LEVELS[currentLevel + 1]?.name}.`);
+                        // Mock the base64 upload if it's not a critical image asset
+                        if (currentLevel < VERIFICATION_LEVELS.length - 1) setVerificationLevel(currentLevel + 1);
+                    }
+                }
+            }}
+        />
+        <label 
+            htmlFor="likeness-upload"
+            className="w-full mt-3 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 flex items-center justify-center cursor-pointer"
+        >
+            <Upload className="w-4 h-4 mr-2"/> Upload Files to Continue
+        </label>
+    </div>
 );
 
 const Modal = ({ isOpen, onClose, title, content }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-70 flex items-center justify-center p-4">
-      <div className="bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-700 flex justify-between items-center">
-          <h3 className="text-xl font-bold text-white">{title}</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-white transition">
-            <XCircle className="w-6 h-6" />
-          </button>
-        </div>
-        <div className="p-6">
-          {content.type === 'image' && (
-            <img 
-              src={content.data} 
-              alt="Generated Asset" 
-              className="w-full h-auto rounded-lg shadow-md border border-gray-700"
-            />
-          )}
-          {content.type === 'json' && (
-            <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
-              {/* Ensure we attempt to parse to pretty print, but fallback to raw text if parsing fails */}
-              {(() => {
-                try {
-                  return JSON.stringify(JSON.parse(content.data), null, 2);
-                } catch (e) {
-                  return content.data;
-                }
-              })()}
-            </pre>
-          )}
-           {content.type === 'prompt' && (
-            <p className="bg-gray-900 text-yellow-400 italic p-4 rounded-lg text-base">
-              "{content.data}"
-            </p>
-          )}
-           {content.type === 'text' && (
-            <p className="bg-gray-900 text-white p-4 rounded-lg text-base">
-              {content.data}
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-70 flex items-center justify-center p-4">
+      <div className="bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-700 flex justify-between items-center">
+          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-white transition">
+            <XCircle className="w-6 h-6" />
+          </button>
+        </div>
+        <div className="p-6">
+          {content.type === 'image' && (
+            <img 
+              src={content.data} 
+              alt="Generated Asset" 
+              className="w-full h-auto rounded-lg shadow-md border border-gray-700"
+            />
+          )}
+          {content.type === 'json' && (
+            <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
+              {/* Ensure we attempt to parse to pretty print, but fallback to raw text if parsing fails */}
+              {(() => {
+                try {
+                  return JSON.stringify(JSON.parse(content.data), null, 2);
+                } catch (e) {
+                  return content.data;
+                }
+              })()}
+            </pre>
+          )}
+           {content.type === 'prompt' && (
+            <p className="bg-gray-900 text-yellow-400 italic p-4 rounded-lg text-base">
+              "{content.data}"
+            </p>
+          )}
+           {content.type === 'text' && (
+            <p className="bg-gray-900 text-white p-4 rounded-lg text-base">
+              {content.data}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
-const ChatModal = ({ isOpen, onClose, title, persona, initialPrompt, apiKey }) => {
-    const { useState, useEffect, useRef } = React;
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const messagesEndRef = useRef(null);
+const ChatModal = ({ isOpen, onClose, title, persona, initialPrompt, apiKey, matchData }) => {
+    const { useState, useEffect, useRef } = React;
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef(null);
 
-    useEffect(() => {
-        if (isOpen && messages.length === 0) {
-            // Start the conversation with the persona's greeting
-            handleSendMessage(initialPrompt, true);
-        }
-    }, [isOpen]);
+    useEffect(() => {
+        if (isOpen && messages.length === 0) {
+            let startPrompt = initialPrompt;
+            if (matchData) {
+                // Add match data to the initial prompt for the new match chat
+                startPrompt = `You are now chatting with ${matchData.name} (Match Type: ${matchData.matchType}, Status: ${matchData.matchStatus}). Your first message should acknowledge this match and ask a relevant question to break the ice, skipping all small talk based on the verified profile data.`;
+            }
+            // Start the conversation with the persona's greeting
+            handleSendMessage(startPrompt, true);
+        }
+    }, [isOpen]);
 
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
-    if (!isOpen) return null;
+    if (!isOpen) return null;
 
-    const chatCallGeminiAPI = async (userMessages, systemInstruction) => {
-        if (!apiKey || apiKey.trim() === "") {
-            return "CRITICAL ERROR: Gemini API Key is missing for chat. Please add your key to the API_KEY constant.";
-        }
-        
-        const url = `${API_BASE}${GEMINI_FLASH}:generateContent?key=${apiKey}`;
-        const contents = userMessages.map(msg => ({
-            role: msg.role === 'user' ? 'user' : 'model',
-            parts: [{ text: msg.text }]
-        }));
+    const chatCallGeminiAPI = async (userMessages, systemInstruction) => {
+        if (!apiKey || apiKey.trim() === "") {
+            return "CRITICAL ERROR: Gemini API Key is missing for chat. Please add your key to the API_KEY constant.";
+        }
+        
+        const url = `${API_BASE}${GEMINI_FLASH}:generateContent?key=${apiKey}`;
+        const contents = userMessages.map(msg => ({
+            role: msg.role === 'user' ? 'user' : 'model',
+            parts: [{ text: msg.text }]
+        }));
 
-        const payload = {
-            contents: contents,
-            systemInstruction: {
-                parts: [{ text: systemInstruction }]
-            },
-            tools: persona === 'Help Chat' ? [{ "google_search": {} }] : undefined // Only enable search for help chat
-        };
-        
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+        const payload = {
+            contents: contents,
+            systemInstruction: {
+                parts: [{ text: systemInstruction }]
+            },
+            tools: persona === 'Help Chat' ? [{ "google_search": {} }] : undefined // Only enable search for help chat
+        };
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-            const result = await response.json();
-            return result.candidates?.[0]?.content?.parts?.[0]?.text || "I apologize, I couldn't generate a coherent response.";
+            const result = await response.json();
+            return result.candidates?.[0]?.content?.parts?.[0]?.text || "I apologize, I couldn't generate a coherent response.";
 
-        } catch (error) {
-            console.error("Gemini Chat API error:", error);
-            return `Error: Could not connect to the AI model. Details: ${error.message}`;
-        }
-    };
+        } catch (error) {
+            console.error("Gemini Chat API error:", error);
+            return `Error: Could not connect to the AI model. Details: ${error.message}`;
+        }
+    };
 
-    const handleSendMessage = async (text, isInitial = false) => {
-        if (!text.trim() && !isInitial) return;
+    const handleSendMessage = async (text, isInitial = false) => {
+        if (!text.trim() && !isInitial) return;
 
-        const newUserMessage = { role: 'user', text: text };
-        
-        setMessages(prev => [...prev, newUserMessage]);
-        setInput('');
-        setIsLoading(true);
+        const newUserMessage = { role: 'user', text: text };
+        
+        setMessages(prev => [...prev, newUserMessage]);
+        setInput('');
+        setIsLoading(true);
 
-        const chatHistory = [...messages, newUserMessage];
-        
-        const systemInstruction = persona === 'AI Therapist' 
-            ? `You are an empathetic, non-judgmental AI Therapist specializing in attachment styles and light Myers-Briggs (MBTI) profiling. Your goal is to guide the user toward self-discovery, and if they express interest, guide them through a structured interview to prepare a 'Matchmaking Profile' and verify their CV/Attachment Style. Start by asking how they are doing.`
-            : `You are the helpful AI support agent for the LMA Identity Platform. Your sole function is to answer questions based ONLY on the provided project documentation and the platform's features (LMA Dashboard, Identity Moat, Royalty Split, Verification Levels, etc.). Do not invent outside information.`;
+        const chatHistory = [...messages, newUserMessage];
+        
+        let systemInstruction;
+        if (persona === 'AI Therapist') {
+            systemInstruction = `You are an empathetic, non-judgmental AI Therapist specializing in attachment styles and light Myers-Briggs (MBTI) profiling. Your goal is to guide the user toward self-discovery, and if they express interest, guide them through a structured interview to prepare a 'Matchmaking Profile' and verify their CV/Attachment Style. Start by asking how they are doing.`;
+        } else if (persona === 'Help Chat') {
+            systemInstruction = `You are the helpful AI support agent for the LMA Identity Platform. Your sole function is to answer questions based ONLY on the provided project documentation and the platform's features (Identity Moat, Royalty Split, Verification Levels, etc.). Do not invent outside information.`;
+        } else if (persona === 'Match Chat') {
+            systemInstruction = `You are the AI likeness of ${matchData.name}. Your purpose is to chat with the user based on the verified profile data provided by the AI Therapist. Skip all small talk and get straight to a relevant question about business, friendship, or dating based on the Match Type (${matchData.matchType}).`;
+        }
 
-        const aiResponseText = await chatCallGeminiAPI(chatHistory, systemInstruction);
 
-        setMessages(prev => [...prev, { role: 'model', text: aiResponseText }]);
-        setIsLoading(false);
-    };
+        const aiResponseText = await chatCallGeminiAPI(chatHistory, systemInstruction);
 
-    return (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-70 flex items-end justify-end p-4">
-            <div className="bg-gray-800 rounded-t-xl md:rounded-xl shadow-2xl max-w-sm w-full h-[80vh] flex flex-col">
-                <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-900 rounded-t-xl">
-                    <h3 className={`text-lg font-bold ${persona === 'AI Therapist' ? 'text-green-400' : 'text-indigo-400'}`}>{title}</h3>
-                    <button onClick={onClose} className="text-gray-400 hover:text-white transition">
-                        <XCircle className="w-5 h-5" />
-                    </button>
-                </div>
-                <div className="flex-grow p-4 space-y-4 overflow-y-auto">
-                    {messages.map((msg, index) => (
-                        <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-[80%] p-3 rounded-xl shadow-md ${
-                                msg.role === 'user' 
-                                    ? 'bg-indigo-600 text-white rounded-br-none' 
-                                    : 'bg-gray-700 text-gray-200 rounded-tl-none'
-                            }`}>
-                                {msg.text}
-                            </div>
-                        </div>
-                    ))}
-                    {isLoading && (
-                        <div className="flex justify-start">
-                            <div className="bg-gray-700 text-gray-200 p-3 rounded-xl rounded-tl-none animate-pulse">
-                                ...
-                            </div>
-                        </div>
-                    )}
-                    <div ref={messagesEndRef} />
-                </div>
-                <div className="p-4 border-t border-gray-700 flex bg-gray-900">
-                    <input
-                        type="text"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(input)}
-                        className="flex-grow p-2 rounded-l-lg bg-gray-700 text-white border-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        placeholder="Ask or reply..."
-                        disabled={isLoading}
-                    />
-                    <button
-                        onClick={() => handleSendMessage(input)}
-                        className="p-3 bg-indigo-600 text-white rounded-r-lg hover:bg-indigo-700 disabled:bg-gray-500 transition"
-                        disabled={isLoading || input.trim() === ''}
-                    >
-                        <Send className="w-5 h-5" />
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+        setMessages(prev => [...prev, { role: 'model', text: aiResponseText }]);
+        setIsLoading(false);
+    };
+
+
+    return (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-70 flex items-end justify-end p-4">
+            <div className="bg-gray-800 rounded-t-xl md:rounded-xl shadow-2xl max-w-sm w-full h-[80vh] flex flex-col">
+                <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-900 rounded-t-xl">
+                    <h3 className={`text-lg font-bold ${persona === 'AI Therapist' ? 'text-green-400' : persona === 'Match Chat' ? 'text-pink-400' : 'text-indigo-400'}`}>{title}</h3>
+                    <button onClick={onClose} className="text-gray-400 hover:text-white transition">
+                        <XCircle className="w-5 h-5" />
+                    </button>
+                </div>
+                {matchData && (
+                    <div className="flex items-center p-3 bg-gray-700 border-b border-gray-600">
+                        <img src={`data:image/png;base64,${MOCK_SELFIE_BASE64}`} alt="Match Likeness" className="w-10 h-10 rounded-full mr-3 border border-pink-500" />
+                        <div>
+                            <p className="text-sm font-bold text-white">{matchData.name}</p>
+                            <p className="text-xs text-pink-300">Match Status: {matchData.matchStatus} | Type: {matchData.matchType}</p>
+                        </div>
+                    </div>
+                )}
+                <div className="flex-grow p-4 space-y-4 overflow-y-auto">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                            <div className={`max-w-[80%] p-3 rounded-xl shadow-md ${
+                                msg.role === 'user' 
+                                    ? 'bg-indigo-600 text-white rounded-br-none' 
+                                    : 'bg-gray-700 text-gray-200 rounded-tl-none'
+                            }`}>
+                                {msg.text}
+                            </div>
+                        </div>
+                    ))}
+                    {isLoading && (
+                        <div className="flex justify-start">
+                            <div className="bg-gray-700 text-gray-200 p-3 rounded-xl rounded-tl-none animate-pulse">
+                                ...
+                            </div>
+                        </div>
+                    )}
+                    <div ref={messagesEndRef} />
+                </div>
+                <div className="p-4 border-t border-gray-700 flex bg-gray-900">
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(input)}
+                        className="flex-grow p-2 rounded-l-lg bg-gray-700 text-white border-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Text or audio message..."
+                        disabled={isLoading}
+                    />
+                    <button
+                        onClick={() => handleSendMessage(input)}
+                        className="p-3 bg-indigo-600 text-white rounded-r-lg hover:bg-indigo-700 disabled:bg-gray-500 transition"
+                        disabled={isLoading || input.trim() === ''}
+                    >
+                        <Send className="w-5 h-5" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 };
+
 
 const AssetCard = ({ asset, onStart, onPreview, onOptionChange, onPush, selfieBase64, productImageBase64, petImageBase64 }) => {
-  const { bg, text, icon: Icon } = getStatusClasses(asset.status);
-  const isPending = asset.status === 'pending';
-  const isComplete = asset.status === 'success';
-  
-  // Provide default empty object for options to prevent crash
-  const options = asset.options || {}; 
+  const { bg, text, icon: Icon } = getStatusClasses(asset.status);
+  const isPending = asset.status === 'pending';
+  const isComplete = asset.status === 'success';
+  
+  // Provide default empty object for options to prevent crash
+  const options = asset.options || {}; 
 
-  // Helper for simple toggles
-  const handleToggle = (key) => {
-    onOptionChange(asset.id, key, !options[key]);
-  };
+  // Helper for simple toggles
+  const handleToggle = (key) => {
+    onOptionChange(asset.id, key, !options[key]);
+  };
 
-  // Helper for file upload buttons
-  const handleFileUpload = async (e, key) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const base64Data = await readBase64Image(file);
-        onOptionChange(asset.id, key, base64Data); // Store base64 data
-        onOptionChange(asset.id, key.replace('Base64', 'Uploaded'), true); // Set uploaded flag
-      } catch (error) {
-        console.error("File upload failed:", error);
-        alert("Failed to read file.");
-      }
-    }
-  };
+  // Helper for file upload buttons
+  const handleFileUpload = async (e, key) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const base64Data = await readBase64Image(file);
+        onOptionChange(asset.id, key, base64Data); // Store base64 data
+        onOptionChange(asset.id, key.replace('Base64', 'Uploaded'), true); // Set uploaded flag
+      } catch (error) {
+        console.error("File upload failed:", error);
+        alert("Failed to read file.");
+      }
+    }
+  };
 
-  const uploadInputId = `upload-${asset.id}`;
-  const uploadTextKey = asset.id === 2 ? 'productImageBase64' : 'petImageBase64';
-  const uploadedFlag = options[uploadTextKey.replace('Base64', 'Uploaded')];
+  const uploadInputId = `upload-${asset.id}`;
+  const uploadTextKey = asset.id === 2 ? 'productImageBase64' : 'petImageBase64';
+  const uploadedFlag = options[uploadTextKey.replace('Base64', 'Uploaded')];
 
-  return (
-    <div className={`p-5 rounded-xl shadow-xl border border-gray-700 ${bg} transition duration-300 hover:shadow-indigo-900/50`}>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <asset.icon className={`w-6 h-6 ${text}`} />
-          <h4 className="text-lg font-semibold text-white">{asset.name}</h4>
-        </div>
-        <span className={`text-xs font-medium px-3 py-1 rounded-full border ${text} border-current capitalize`}>
-          {asset.status.replace('_', ' ')}
-        </span>
-      </div>
-      <p className="text-sm text-gray-400 mt-2">Marketplace: {asset.marketplace}</p>
-      
-      {asset.isGemini && (
-        <p className="text-xs text-indigo-400 mt-1">Powered by Gemini AI</p>
-      )}
 
-      {/* --- Asset Options for How-To Videos (ID 3) --- */}
-      {asset.id === 3 && (
-        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
-            <label className="block text-gray-400 text-xs uppercase font-medium">Session Type (Character will appear as you):</label>
-            <select 
-                value={options.sessionType}
-                onChange={(e) => onOptionChange(asset.id, 'sessionType', e.target.value)}
-                className="p-2 w-full bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500"
-            >
-                <option value="yoga">Yoga Session (Still Pictures -> Video Flow)</option>
-                <option value="pilates">Pilates Session (Still Pictures -> Video Flow)</option>
-            </select>
-        </div>
-      )}
+  return (
+    <div className={`p-5 rounded-xl shadow-xl border border-gray-700 ${bg} transition duration-300 hover:shadow-indigo-900/50`}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <asset.icon className={`w-6 h-6 ${text}`} />
+          <h4 className="text-lg font-semibold text-white">{asset.name}</h4>
+        </div>
+        <span className={`text-xs font-medium px-3 py-1 rounded-full border ${text} border-current capitalize`}>
+          {asset.status.replace('_', ' ')}
+        </span>
+      </div>
+      <p className="text-sm text-gray-400 mt-2">Marketplace: {asset.marketplace}</p>
+      
+      {asset.isGemini && (
+        <p className="text-xs text-indigo-400 mt-1">Powered by Gemini AI</p>
+      )}
 
-      {/* --- Asset Options for Adult PPV Art (ID 4) --- */}
-      {asset.id === 4 && (
-        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
-            <label className="block text-gray-400 text-xs uppercase font-medium">Likeness Options (18+ Verified):</label>
-            <div className="flex space-x-3 mb-2">
-                <select 
-                    value={options.gender}
-                    onChange={(e) => onOptionChange(asset.id, 'gender', e.target.value)}
-                    className="p-2 flex-grow bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500"
-                >
-                    <option value="female">Female Likeness</option>
-                    <option value="male">Male Likeness</option>
-                </select>
-            </div>
-            <div className="space-y-2">
-                <div className="flex items-center justify-between bg-gray-700 p-2 rounded-lg">
-                    <span className="text-white">Enable Tattoos/Morph Couture</span>
-                    <input 
-                        type="checkbox"
-                        checked={options.tattoosEnabled}
-                        onChange={() => handleToggle('tattoosEnabled')}
-                        className="form-checkbox h-5 w-5 text-indigo-600 rounded"
-                    />
-                </div>
-                <div className="flex items-center justify-between bg-gray-700 p-2 rounded-lg">
-                    <span className="text-white">Enable Chat Twin on Adult Channel</span>
-                    <input 
-                        type="checkbox"
-                        checked={options.chatTwinEnabled}
-                        onChange={() => handleToggle('chatTwinEnabled')}
-                        className="form-checkbox h-5 w-5 text-indigo-600 rounded"
-                    />
-                </div>
-            </div>
-        </div>
-      )}
-      
-      {/* --- Asset Options for Stock Image Series (ID 2) --- */}
-      {asset.id === 2 && (
-        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
-            <label className="block text-gray-400 text-xs uppercase font-medium">Product Mockup:</label>
-            <input 
-                type="file" 
-                id={uploadInputId} 
-                className="hidden" 
-                accept="image/*" 
-                onChange={(e) => handleFileUpload(e, uploadTextKey)}
-            />
-            <label 
-                htmlFor={uploadInputId}
-                className={`w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md hover:scale-[1.02] transition duration-150 flex items-center justify-center cursor-pointer ${uploadedFlag ? 'bg-green-600 text-white' : 'bg-gray-600 text-white hover:bg-gray-700'}`}
-            >
-                <Upload className="w-4 h-4 mr-2"/> {uploadedFlag ? 'Product Image Uploaded' : 'Upload Product Mockup'}
-            </label>
-        </div>
-      )}
+      {/* --- Asset Options for How-To Videos (ID 3) --- */}
+      {asset.id === 3 && (
+        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
+            <label className="block text-gray-400 text-xs uppercase font-medium">Session Type (Character will appear as you):</label>
+            <select 
+                value={options.sessionType}
+                onChange={(e) => onOptionChange(asset.id, 'sessionType', e.target.value)}
+                className="p-2 w-full bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500"
+            >
+                <option value="yoga">Yoga Session (Still Pictures -> Video Flow)</option>
+                <option value="pilates">Pilates Session (Still Pictures -> Video Flow)</option>
+            </select>
+        </div>
+      )}
 
-      {/* --- Asset Options for Pet Stock Images (ID 7) --- */}
-      {asset.id === 7 && (
-        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
-            <label className="block text-gray-400 text-xs uppercase font-medium">Pet Photo Source (Required):</label>
-            <input 
-                type="file" 
-                id={uploadInputId} 
-                className="hidden" 
-                accept="image/*" 
-                onChange={(e) => handleFileUpload(e, uploadTextKey)}
-            />
-            <label 
-                htmlFor={uploadInputId}
-                className={`w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md hover:scale-[1.02] transition duration-150 flex items-center justify-center cursor-pointer ${uploadedFlag ? 'bg-green-600 text-white' : 'bg-gray-600 text-white hover:bg-gray-700'}`}
-            >
-                <Upload className="w-4 h-4 mr-2"/> {uploadedFlag ? 'Pet Image Uploaded' : 'Upload Pet Photo'}
-            </label>
-        </div>
-      )}
+      {/* --- Asset Options for Adult PPV Art (ID 4) --- */}
+      {asset.id === 4 && (
+        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
+            <label className="block text-gray-400 text-xs uppercase font-medium">Likeness Options (18+ Verified):</label>
+            <div className="flex space-x-3 mb-2">
+                <select 
+                    value={options.gender}
+                    onChange={(e) => onOptionChange(asset.id, 'gender', e.target.value)}
+                    className="p-2 flex-grow bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                    <option value="female">Female Likeness</option>
+                    <option value="male">Male Likeness</option>
+                </select>
+            </div>
+            <div className="space-y-2">
+                <div className="flex items-center justify-between bg-gray-700 p-2 rounded-lg">
+                    <span className="text-white">Enable Tattoos/Morph Couture</span>
+                    <input 
+                        type="checkbox"
+                        checked={options.tattoosEnabled}
+                        onChange={() => handleToggle('tattoosEnabled')}
+                        className="form-checkbox h-5 w-5 text-indigo-600 rounded"
+                    />
+                </div>
+                <div className="flex items-center justify-between bg-gray-700 p-2 rounded-lg">
+                    <span className="text-white">Enable Chat Twin on Adult Channel</span>
+                    <input 
+                        type="checkbox"
+                        checked={options.chatTwinEnabled}
+                        onChange={() => handleToggle('chatTwinEnabled')}
+                        className="form-checkbox h-5 w-5 text-indigo-600 rounded"
+                    />
+                </div>
+            </div>
+        </div>
+      )}
+      
+      {/* --- Asset Options for Stock Image Series (ID 2) --- */}
+      {asset.id === 2 && (
+        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
+            <label className="block text-gray-400 text-xs uppercase font-medium">Product Mockup:</label>
+            <input 
+                type="file" 
+                id={uploadInputId} 
+                className="hidden" 
+                accept="image/*" 
+                onChange={(e) => handleFileUpload(e, uploadTextKey)}
+            />
+            <label 
+                htmlFor={uploadInputId}
+                className={`w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md hover:scale-[1.02] transition duration-150 flex items-center justify-center cursor-pointer ${uploadedFlag ? 'bg-green-600 text-white' : 'bg-gray-600 text-white hover:bg-gray-700'}`}
+            >
+                <Upload className="w-4 h-4 mr-2"/> {uploadedFlag ? 'Product Image Uploaded' : 'Upload Product Mockup'}
+            </label>
+        </div>
+      )}
 
-      {/* --- Music Job Options (ID 5) --- */}
-      {asset.id === 5 && (
-        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
-            <label className="block text-gray-400 text-xs uppercase font-medium">Music Generation:</label>
-            <div className="flex justify-between items-center space-x-2">
-                <select 
-                    value={options.genre}
-                    onChange={(e) => onOptionChange(asset.id, 'genre', e.target.value)}
-                    className="p-2 flex-grow bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500"
-                >
-                    <option value="pop">Pop</option>
-                    <option value="edm">EDM</option>
-                    <option value="hip-hop">Hip-Hop</option>
-                    <option value="latin">Latin</option>
-                </select>
-                <button
-                    onClick={() => handleToggle('playlistLinked')}
-                    className={`px-3 py-2 text-sm font-medium rounded-lg shadow-md transition duration-150 ${options.playlistLinked ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-yellow-600 hover:bg-yellow-700 text-gray-900'}`}
-                >
-                    {options.playlistLinked ? 'Playlist Linked' : 'Link Playlist'}
-                </button>
-            </div>
-             <p className="text-xs text-gray-500 mt-1">
-                Note: Music and Video jobs must be run separately after linking a playlist.
-            </p>
-        </div>
-      )}
+      {/* --- Asset Options for Pet Stock Images (ID 7) --- */}
+      {asset.id === 7 && (
+        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
+            <label className="block text-gray-400 text-xs uppercase font-medium">Pet Photo Source (Required):</label>
+            <input 
+                type="file" 
+                id={uploadInputId} 
+                className="hidden" 
+                accept="image/*" 
+                onChange={(e) => handleFileUpload(e, uploadTextKey)}
+            />
+            <label 
+                htmlFor={uploadInputId}
+                className={`w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md hover:scale-[1.02] transition duration-150 flex items-center justify-center cursor-pointer ${uploadedFlag ? 'bg-green-600 text-white' : 'bg-gray-600 text-white hover:bg-gray-700'}`}
+            >
+                <Upload className="w-4 h-4 mr-2"/> {uploadedFlag ? 'Pet Image Uploaded' : 'Upload Pet Photo'}
+            </label>
+        </div>
+      )}
 
-      <div className="mt-4 pt-4 border-t border-gray-700 flex items-center justify-between">
-        <p className="text-sm font-mono text-gray-500 truncate mr-4">
-          ID: {asset.assetId}
-        </p>
-        
-        <div className="flex space-x-2">
-            {isComplete && asset.assetData && (
-                <button 
-                    onClick={() => onPreview(asset)}
-                    className="px-3 py-2 bg-indigo-500/10 text-indigo-400 text-sm font-medium rounded-lg shadow-md hover:bg-indigo-500/20 transition duration-150 transform hover:scale-[1.02] flex items-center"
-                >
-                    <Eye className="w-4 h-4 mr-1"/> Preview
-                </button>
-            )}
-             {isComplete && (
-                <button 
-                    onClick={() => onPush(asset.id)}
-                    className="px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-green-700 transition duration-150 transform hover:scale-[1.02] flex items-center"
-                >
-                    <Upload className="w-4 h-4 mr-1"/> Push to Odoo
-                </button>
-            )}
-            {(isPending || asset.status === 'failed' || !isComplete) && (
-                <button 
-                    onClick={() => onStart(asset.id)}
-                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 transform hover:scale-[1.02]"
-                    disabled={asset.status === 'in_progress'}
-                >
-                    {asset.status === 'in_progress' ? 'Running...' : asset.id === 5 && asset.assetId !== 'N/A' ? 'Run Video Job' : 'Run Job'}
-                </button>
-            )}
-        </div>
-      </div>
-    </div>
-  );
+      {/* --- Music Job Options (ID 5) --- */}
+      {asset.id === 5 && (
+        <div className='mt-3 space-y-2 text-sm pt-2 border-t border-gray-700'>
+            <label className="block text-gray-400 text-xs uppercase font-medium">Music Generation:</label>
+            <div className="flex justify-between items-center space-x-2">
+                <select 
+                    value={options.genre}
+                    onChange={(e) => onOptionChange(asset.id, 'genre', e.target.value)}
+                    className="p-2 flex-grow bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                    <option value="pop">Pop</option>
+                    <option value="edm">EDM</option>
+                    <option value="hip-hop">Hip-Hop</option>
+                    <option value="latin">Latin</option>
+                </select>
+                <button
+                    onClick={() => handleToggle('playlistLinked')}
+                    className={`px-3 py-2 text-sm font-medium rounded-lg shadow-md transition duration-150 ${options.playlistLinked ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-yellow-600 hover:bg-yellow-700 text-gray-900'}`}
+                >
+                    {options.playlistLinked ? 'Playlist Linked' : 'Link Playlist'}
+                </button>
+            </div>
+             <p className="text-xs text-gray-500 mt-1">
+                Note: Music and Video jobs must be run separately after linking a playlist.
+            </p>
+        </div>
+      )}
+
+      <div className="mt-4 pt-4 border-t border-gray-700 flex items-center justify-between">
+        <p className="text-sm font-mono text-gray-500 truncate mr-4">
+          ID: {asset.assetId}
+        </p>
+        
+        <div className="flex space-x-2">
+            {isComplete && asset.assetData && (
+                <button 
+                    onClick={() => onPreview(asset)}
+                    className="px-3 py-2 bg-indigo-500/10 text-indigo-400 text-sm font-medium rounded-lg shadow-md hover:bg-indigo-500/20 transition duration-150 transform hover:scale-[1.02] flex items-center"
+                >
+                    <Eye className="w-4 h-4 mr-1"/> Preview
+                </button>
+            )}
+             {isComplete && (
+                <button 
+                    onClick={() => onPush(asset.id)}
+                    className="px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-green-700 transition duration-150 transform hover:scale-[1.02] flex items-center"
+                >
+                    <Upload className="w-4 h-4 mr-1"/> Push to Odoo
+                </button>
+            )}
+            {(isPending || asset.status === 'failed' || !isComplete) && (
+                <button 
+                    onClick={() => onStart(asset.id)}
+                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 transform hover:scale-[1.02]"
+                    disabled={asset.status === 'in_progress'}
+                >
+                    {asset.status === 'in_progress' ? 'Running...' : asset.id === 5 && asset.assetId !== 'N/A' ? 'Run Video Job' : 'Run Job'}
+                </button>
+            )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
-const PayoutCard = ({ userId, payoutMethod, totalEarnings, assetFolderUrl }) => (
-  <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-indigo-600/50">
-    <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-      <DollarSign className="w-5 h-5 mr-2 text-green-400" />
-      Royalty & Payout Setup
-    </h3>
-    <div className="space-y-3">
-      <div className="flex justify-between items-center text-sm">
-        <span className="text-gray-400">User ID:</span>
-        <code className="bg-gray-700 text-yellow-400 px-2 py-1 rounded-md truncate">{userId}</code>
-      </div>
-      <div className="flex justify-between items-center text-sm">
-        <span className="text-gray-400">Payout Method:</span>
-        <span className="text-green-400 font-medium">{payoutMethod}</span>
-      </div>
-      <div className="flex justify-between items-center text-sm">
-        <span className="text-gray-400">Asset Folder Link:</span>
-        <a href={assetFolderUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline flex items-center truncate max-w-[60%]">
-          <Link className="w-4 h-4 mr-1"/> Odoo Asset Link
-        </a>
-      </div>
-      <div className="flex justify-between items-center text-lg font-bold pt-3 border-t border-gray-700 mt-3">
-        <span className="text-indigo-400">Total Royalty Earnings:</span>
-        <span className="text-green-400">{totalEarnings}</span>
-      </div>
-    </div>
-  </div>
+const PayoutCard = ({ userId, payoutMethod, totalEarnings, totalViews, onPayoutChange }) => (
+  <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-indigo-600/50">
+    <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+      <DollarSign className="w-5 h-5 mr-2 text-green-400" />
+      Royalty & Payout Setup
+    </h3>
+    <div className="space-y-3">
+      <div className="flex justify-between items-center text-sm">
+        <span className="text-gray-400">Total Asset Views (Est.):</span>
+        <span className="text-yellow-400 font-medium">{totalViews}</span>
+      </div>
+      
+      <div className="text-sm">
+        <label htmlFor="payout-method" className="block text-gray-400 mb-1">Payout Method (Venmo/Zelle Email/SMS):</label>
+        <input 
+            id="payout-method" 
+            type="text" 
+            placeholder="Enter email or phone"
+            value={payoutMethod}
+            onChange={(e) => onPayoutChange(e.target.value)}
+            className="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+      
+      <div className="flex justify-between items-center text-lg font-bold pt-3 border-t border-gray-700 mt-3">
+        <span className="text-indigo-400">Total Royalty Earnings:</span>
+        <span className="text-green-400">{totalEarnings}</span>
+      </div>
+    </div>
+  </div>
 );
 
-const MatchmakingCard = ({ onRunMatch }) => {
-    const { useState, useEffect } = React;
-    const [status, setStatus] = useState('pending'); // pending, in_progress, matched, no_match
-    const [matchName, setMatchName] = useState('N/A');
-    const [matchType, setMatchType] = useState('BFF');
+const MatchmakingCard = ({ onRunMatch, onOpenMatchChat, matchData }) => {
+    const { useState, useEffect } = React;
+    const [status, setStatus] = useState('pending'); // pending, in_progress, matched, no_match
+    const [matchName, setMatchName] = useState('N/A');
+    const [matchType, setMatchType] = useState('BFF');
 
-    const handleRunMatch = async () => {
-        setStatus('in_progress');
-        setMatchName('Searching...');
+    const handleRunMatch = async () => {
+        setStatus('in_progress');
+        setMatchName('Searching...');
 
-        // Simulate AI Therapist consultation and match logic
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        const possibleMatches = ['Sophia_Bizz', 'Liam_BFF', 'Mia_Date', 'Alex_BFF'];
-        const outcome = Math.random() > 0.4 ? 'matched' : 'no_match';
-        const type = ['BFF', 'Date', 'Bizz'][Math.floor(Math.random() * 3)];
-        
-        if (outcome === 'matched') {
-            setMatchName(possibleMatches[Math.floor(Math.random() * possibleMatches.length)]);
-            setMatchType(type);
-            setStatus('matched');
-        } else {
-            setMatchName('No strong match found.');
-            setStatus('no_match');
-        }
-    };
+        // Simulate AI Therapist consultation and match logic
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        const possibleMatches = [
+            { name: 'Sophia_Bizz', type: 'Bizz' }, 
+            { name: 'Liam_BFF', type: 'BFF' }, 
+            { name: 'Mia_Date', type: 'Date' }, 
+            { name: 'Alex_BFF', type: 'BFF' }
+        ];
+        const outcome = Math.random() > 0.4 ? 'matched' : 'no_match';
+        
+        if (outcome === 'matched') {
+            const match = possibleMatches[Math.floor(Math.random() * possibleMatches.length)];
+            setMatchName(match.name);
+            setMatchType(match.type);
+            setStatus('matched');
+            onOpenMatchChat({ name: match.name, type: match.type, status: 'Matched' });
+        } else {
+            setMatchName('No strong match found.');
+            setStatus('no_match');
+        }
+    };
 
-    const StatusIcon = status === 'matched' ? Heart : status === 'no_match' ? XCircle : Clock;
-    const StatusColor = status === 'matched' ? 'text-pink-400' : status === 'no_match' ? 'text-yellow-400' : 'text-gray-400';
+    const StatusIcon = status === 'matched' ? Heart : status === 'no_match' ? XCircle : Clock;
+    const StatusColor = status === 'matched' ? 'text-pink-400' : status === 'no_match' ? 'text-yellow-400' : 'text-gray-400';
 
-    return (
-        <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-pink-600/50">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                <Heart className="w-5 h-5 mr-2 text-pink-400" />
-                AI Matchmaking (BFF / Bizz / Date)
-            </h3>
-            <p className="text-sm text-gray-400 mb-4">
-                Leverages AI Therapist data to find highly compatible, verified creators.
-            </p>
-            
-            <div className="space-y-3">
-                <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-400">Match Type:</span>
-                    <span className={`font-semibold ${StatusColor}`}>{matchType}</span>
-                </div>
-                <div className="flex justify-between items-center text-lg font-bold">
-                    <span className="text-indigo-400">Match Result:</span>
-                    <span className={`${StatusColor} flex items-center`}>
-                        <StatusIcon className={`w-5 h-5 mr-1 ${StatusColor}`} />
-                        {matchName}
-                    </span>
-                </div>
-            </div>
-            
-            <button 
-                onClick={handleRunMatch}
-                className={`w-full mt-4 px-4 py-2 text-white font-medium rounded-lg shadow-md transition duration-150 ${status === 'in_progress' ? 'bg-gray-600' : 'bg-pink-600 hover:bg-pink-700'}`}
-                disabled={status === 'in_progress'}
-            >
-                {status === 'in_progress' ? 'Consulting Therapist AI...' : 'Run Matchmaking'}
-            </button>
-        </div>
-    );
+    return (
+        <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-pink-600/50">
+            <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                <Heart className="w-5 h-5 mr-2 text-pink-400" />
+                AI Matchmaking (BFF / Bizz / Date)
+            </h3>
+            <p className="text-sm text-gray-400 mb-4">
+                Leverages AI Therapist data to find highly compatible, verified creators.
+            </p>
+            
+            <div className="space-y-3">
+                <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-400">Match Type:</span>
+                    <span className={`font-semibold ${StatusColor}`}>{matchType}</span>
+                </div>
+                <div className="flex justify-between items-center text-lg font-bold">
+                    <span className="text-indigo-400">Match Result:</span>
+                    <span className={`${StatusColor} flex items-center`}>
+                        <StatusIcon className={`w-5 h-5 mr-1 ${StatusColor}`} />
+                        <span className="cursor-pointer hover:underline" onClick={() => status === 'matched' && onOpenMatchChat({ name: matchName, type: matchType, status: 'Matched' })}>
+                             {matchName}
+                        </span>
+                    </span>
+                </div>
+            </div>
+            
+            <button 
+                onClick={handleRunMatch}
+                className={`w-full mt-4 px-4 py-2 text-white font-medium rounded-lg shadow-md transition duration-150 ${status === 'in_progress' ? 'bg-gray-600' : 'bg-pink-600 hover:bg-pink-700'}`}
+                disabled={status === 'in_progress'}
+            >
+                {status === 'in_progress' ? 'Consulting Therapist AI...' : 'Run Matchmaking'}
+            </button>
+        </div>
+    );
 };
 
 const AssetGallery = ({ selfie, product, pet, assets }) => {
-    
-    const uploadedImages = [
-        { title: "Verified Selfie (Source)", data: selfie, icon: UserCheck, required: true },
-        { title: "Product Mockup (Input)", data: product, icon: ShoppingBag, required: false },
-        { title: "Pet Photo (Input)", data: pet, icon: PawPrint, required: false },
-    ].filter(i => i.data);
+    
+    const uploadedImages = [
+        { title: "Verified Selfie (Source)", data: selfie, icon: UserCheck, required: true },
+        { title: "Product Mockup (Input)", data: product, icon: ShoppingBag, required: false },
+        { title: "Pet Photo (Input)", data: pet, icon: PawPrint, required: false },
+    ].filter(i => i.data);
 
-    const generatedImages = assets
-        .filter(a => a.assetData && a.assetData.type === 'image')
-        .map(a => ({
-            title: a.name.replace('?', '').trim(),
-            data: a.assetData.data, // This is the data:image/png;base64,... URL
-            icon: a.icon,
-            assetId: a.assetId
-        }));
+    const generatedImages = assets
+        .filter(a => a.assetData && (a.assetData.type === 'image' || a.assetData.imageBase64))
+        .map(a => ({
+            title: a.name.replace('✨', '').trim(),
+            // Prioritize imageBase64 for How-To videos
+            data: a.assetData.type === 'json' ? `data:image/png;base64,${a.assetData.imageBase64}` : a.assetData.data, 
+            icon: a.icon,
+            assetId: a.assetId
+        }));
 
-    return (
-        <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                <Image className="w-5 h-5 mr-2 text-indigo-400" />
-                Asset & Likeness Gallery
-            </h3>
-            
-            {/* Uploaded Likenesses */}
-            <div className="mb-6">
-                <h4 className="text-lg font-semibold text-gray-300 mb-3 border-b border-gray-700 pb-2">Input Likenesses</h4>
-                <div className="grid grid-cols-3 gap-4">
-                    {uploadedImages.length > 0 ? (
-                        uploadedImages.map((item, index) => (
-                            <div key={index} className="relative group overflow-hidden rounded-lg shadow-md aspect-square bg-gray-900 flex items-center justify-center">
-                                <img 
-                                    src={`data:image/png;base64,${item.data}`} 
-                                    alt={item.title} 
-                                    className="object-cover w-full h-full transition duration-300 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end p-2">
-                                    <p className="text-xs text-white font-medium truncate">{item.title}</p>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-gray-500 text-sm italic col-span-3">No input images uploaded yet. Please use the Verification Card and Asset Options.</p>
-                    )}
-                </div>
-            </div>
+    return (
+        <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+            <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                <Image className="w-5 h-5 mr-2 text-indigo-400" />
+                Asset & Likeness Gallery
+            </h3>
+            
+            {/* Uploaded Likenesses */}
+            <div className="mb-6">
+                <h4 className="text-lg font-semibold text-gray-300 mb-3 border-b border-gray-700 pb-2">Input Likenesses</h4>
+                <div className="grid grid-cols-3 gap-4">
+                    {uploadedImages.length > 0 ? (
+                        uploadedImages.map((item, index) => (
+                            <div key={index} className="relative group overflow-hidden rounded-lg shadow-md aspect-square bg-gray-900 flex items-center justify-center">
+                                <img 
+                                    src={`data:image/png;base64,${item.data}`} 
+                                    alt={item.title} 
+                                    className="object-cover w-full h-full transition duration-300 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end p-2">
+                                    <p className="text-xs text-white font-medium truncate">{item.title}</p>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500 text-sm italic col-span-3">No input images uploaded yet. Please use the Verification Card and Asset Options.</p>
+                    )}
+                </div>
+            </div>
 
-            {/* Generated Assets */}
-            <div>
-                <h4 className="text-lg font-semibold text-gray-300 mb-3 border-b border-gray-700 pb-2">Generated Assets ({generatedImages.length})</h4>
-                <div className="grid grid-cols-3 gap-4">
-                    {generatedImages.length > 0 ? (
-                        generatedImages.map((item, index) => (
-                             <div key={index} className="relative group overflow-hidden rounded-lg shadow-md aspect-square bg-gray-900 flex items-center justify-center">
-                                <img 
-                                    src={item.data} // Already data:image/png;base64,...
-                                    alt={item.title} 
-                                    className="object-cover w-full h-full transition duration-300 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-black bg-opacity-60 flex items-end p-2">
-                                    <p className="text-xs text-green-300 font-medium truncate">{item.title}</p>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-gray-500 text-sm italic col-span-3">Run an AI job (marked with ?) to see generated assets here.</p>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
+            {/* Generated Assets */}
+            <div>
+                <h4 className="text-lg font-semibold text-gray-300 mb-3 border-b border-gray-700 pb-2">Generated Assets ({generatedImages.length})</h4>
+                <div className="grid grid-cols-3 gap-4">
+                    {generatedImages.length > 0 ? (
+                        generatedImages.map((item, index) => (
+                             <div key={index} className="relative group overflow-hidden rounded-lg shadow-md aspect-square bg-gray-900 flex items-center justify-center">
+                                <img 
+                                    src={item.data} // Already data:image/png;base64,...
+                                    alt={item.title} 
+                                    className="object-cover w-full h-full transition duration-300 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-black bg-opacity-60 flex items-end p-2">
+                                    <p className="text-xs text-green-300 font-medium truncate">{item.title}</p>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500 text-sm italic col-span-3">Run an AI job (marked with ✨) to see generated assets here.</p>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
 };
 
+
 const App = () => {
-  const { useState, useEffect } = React; 
-  const [db, setDb] = useState(null);
-  const [auth, setAuth] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [isAuthReady, setIsAuthReady] = useState(false);
-  
-  const [selfieBase64, setSelfieBase64] = useState(null);
-  
-  const [assets, setAssets] = useState(initialAssets);
-  const [verificationLevel, setVerificationLevel] = useState(1); // Start at Selfie Upload for new flow
-  const [totalEarnings, setTotalEarnings] = useState('$4,521.89'); 
-  const [payoutMethod] = useState("Stripe Connect (ID: payout_acct_789)");
-  const [assetFolderUrl] = useState("https://odoo.erp/assets/f7h8d2j"); // Mock Asset Folder URL
+  const { useState, useEffect } = React; 
+  const [db, setDb] = useState(null);
+  const [auth, setAuth] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
+  
+  const [selfieBase64, setSelfieBase64] = useState(null);
+  const [cvUploaded, setCvUploaded] = useState(false);
+  
+  const [assets, setAssets] = useState(initialAssets);
+  const [verificationLevel, setVerificationLevel] = useState(1); // Start at Email/SMS
+  const [totalEarnings, setTotalEarnings] = useState('$4,521.89'); 
+  const [totalViews] = useState('8,340,102'); // New views count
+  const [payoutMethod, setPayoutMethod] = useState("Not set (Enter email/phone)");
+  const [matchData, setMatchData] = useState(null); // State for the active match chat
 
-  const [isModalOpen, setIsModalState] = useState(false);
-  const [modalContent, setModalContent] = useState({});
+  const [isModalOpen, setIsModalState] = useState(false);
+  const [modalContent, setModalContent] = useState({});
 
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatType, setChatType] = useState('therapist');
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatType, setChatType] = useState('therapist');
 
-  const setIsModalOpen = (isOpen) => {
-    setIsModalState(isOpen);
-    if (!isOpen) setModalContent({});
-  };
+  const setIsModalOpen = (isOpen) => {
+    setIsModalState(isOpen);
+    if (!isOpen) setModalContent({});
+  };
 
-  const handleSelfieUpload = async (file) => {
-    try {
-        const base64Data = await readBase64Image(file);
-        setSelfieBase64(base64Data);
-        setVerificationLevel(2); // Move to next verification step
-        alert("Selfie uploaded! Verification level updated to 'Video Scan'.");
-    } catch (e) {
-        alert("Error reading file. Please try again.");
-    }
-  };
+  // --- NEW: Helper to advance verification level on successful step
+  const handleVerifyStep = (current, target) => {
+    if (current < target) {
+        setVerificationLevel(target);
+    }
+  };
 
-  // --- Firebase Initialization and Auth ---
-  useEffect(() => {
-    const firebaseConfigParsed = JSON.parse(firebaseConfig);
-    
-    if (!firebaseConfigParsed.apiKey) {
-      console.error("Firebase config is missing. Firestore persistence disabled.");
-      setIsAuthReady(true);
-      return;
-    }
+  const handleSelfieUpload = async (file) => {
+    try {
+        const base64Data = await readBase64Image(file);
+        setSelfieBase64(base64Data);
+        handleVerifyStep(verificationLevel, 2); // Selfie upload is level 2
+        alert("Selfie uploaded! Verification level updated to 'Video Scan'.");
+    } catch (e) {
+        alert("Error reading file. Please try again.");
+    }
+  };
+  
+  const handleCVUpload = (file) => {
+    // In a real app, this would process the PDF/Docx. Here, we mock success.
+    setCvUploaded(true);
+    handleVerifyStep(verificationLevel, 5); // CV upload is level 5
+    alert("CV uploaded! Verification level updated.");
+  };
 
-    try {
-      const app = firebase.initializeApp(firebaseConfigParsed);
-      const dbInstance = firebase.firestore(app);
-      const authInstance = firebase.auth(app);
-      setDb(dbInstance);
-      setAuth(authInstance);
+  // --- Firebase Initialization and Auth ---
+  useEffect(() => {
+    const firebaseConfigParsed = JSON.parse(firebaseConfig);
+    
+    if (!firebaseConfigParsed.apiKey) {
+      console.error("Firebase config is missing. Firestore persistence disabled.");
+      setIsAuthReady(true);
+      return;
+    }
 
-      authInstance.onAuthStateChanged((user) => {
-        if (user) {
-          setUserId(user.uid);
-        } else {
-          if (initialAuthToken) {
-            authInstance.signInWithCustomToken(initialAuthToken)
-              .then(userCredential => setUserId(userCredential.user.uid))
-              .catch(error => {
-                console.error("Custom token sign-in failed:", error);
-                authInstance.signInAnonymously().then(userCredential => setUserId(userCredential.user.uid));
-              });
-          } else {
-            authInstance.signInAnonymously().then(userCredential => setUserId(userCredential.user.uid));
-          }
-        }
-        setIsAuthReady(true);
-      });
-    } catch (e) {
-      console.error("Firebase initialization failed:", e);
-      setIsAuthReady(true);
-    }
-  }, []);
-  
-  // Mock Firebase Firestore Listener (only used to satisfy mandatory requirement)
-  useEffect(() => {
-    if (db && userId) {
-      const dataRef = db.collection('artifacts').doc(appId).collection('users').doc(userId).collection('dashboard').doc('status');
-      const unsubscribe = dataRef.onSnapshot((docSnap) => {
-        if (docSnap.exists) {
-          const data = docSnap.data();
-          if (data.earnings) {
-              setTotalEarnings(data.earnings);
-          }
-          if (data.verificationLevel !== undefined) {
-            setVerificationLevel(data.verificationLevel);
-          }
-        } else {
-             // Mock initial verified state if no data exists
-             setTotalEarnings('$4,521.89');
-             setVerificationLevel(2); 
-        }
-      }, (error) => {
-        console.error("Firestore error:", error);
-      });
-      return () => unsubscribe();
-    }
-  }, [db, userId]);
+    try {
+      const app = firebase.initializeApp(firebaseConfigParsed);
+      const dbInstance = firebase.firestore(app);
+      const authInstance = firebase.auth(app);
+      setDb(dbInstance);
+      setAuth(authInstance);
 
-  // --- Option Change Handler for Asset Options ---
-  const handleOptionChange = (id, key, value) => {
-    setAssets(prevAssets => 
-        prevAssets.map(a => 
-            a.id === id ? { ...a, options: { ...a.options, [key]: value } } : a
-        )
-    );
-  };
-  
-  // --- Core Job Handlers ---
-  
-  const handlePushJob = (id) => {
-      const asset = assets.find(a => a.id === id);
-      alert(`Asset ${asset.name} (ID: ${asset.assetId}) pushed to Odoo Asset Folder (${assetFolderUrl}). This triggers the final API call/workflow.`);
-      
-      // Optionally advance verification level after PUSHing enough assets
-      if (assets.filter(a => a.status === 'success').length > 3 && verificationLevel < 5) {
-          setVerificationLevel(5); // Mock progression to Therapist Session 1
-      }
-  };
+      authInstance.onAuthStateChanged((user) => {
+        if (user) {
+          setUserId(user.uid);
+          // NEW: Mock initial sign-in/verification step 1 complete
+          if (verificationLevel === 0) setVerificationLevel(1); 
+        } else {
+          if (initialAuthToken) {
+            authInstance.signInWithCustomToken(initialAuthToken)
+              .then(userCredential => setUserId(userCredential.user.uid))
+              .catch(error => {
+                console.error("Custom token sign-in failed:", error);
+                authInstance.signInAnonymously().then(userCredential => setUserId(userCredential.user.uid));
+              });
+          } else {
+            authInstance.signInAnonymously().then(userCredential => setUserId(userCredential.user.uid));
+          }
+        }
+        setIsAuthReady(true);
+      });
+    } catch (e) {
+      console.error("Firebase initialization failed:", e);
+      setIsAuthReady(true);
+    }
+  }, []);
+  
+  // Mock Firebase Firestore Listener (only used to satisfy mandatory requirement)
+  useEffect(() => {
+    if (db && userId) {
+      const dataRef = db.collection('artifacts').doc(appId).collection('users').doc(userId).collection('dashboard').doc('status');
+      const unsubscribe = dataRef.onSnapshot((docSnap) => {
+        if (docSnap.exists) {
+          const data = docSnap.data();
+          if (data.earnings) {
+              setTotalEarnings(data.earnings);
+          }
+          if (data.verificationLevel !== undefined) {
+            setVerificationLevel(data.verificationLevel);
+          }
+        } else {
+             // Mock initial verified state if no data exists
+             setTotalEarnings('$4,521.89');
+             if (verificationLevel === 0) setVerificationLevel(1); // Ensure first step is set
+        }
+      }, (error) => {
+        console.error("Firestore error:", error);
+      });
+      return () => unsubscribe();
+    }
+  }, [db, userId]);
 
-  const handleStartJob = async (id) => {
-    const asset = assets.find(a => a.id === Math.floor(id));
-    if (!asset || asset.status === 'in_progress') return;
+  // --- Gemini API Call Functions (Updated for New Jobs) ---
 
-    if (!selfieBase64 && asset.id !== 7) {
-        alert("Please upload your Selfie first via the Identity Verification card before running this job.");
-        return;
-    }
-    
-    // Check for specific required uploads
-    if (asset.id === 2 && !asset.options?.productImageBase64) {
-        alert("Please upload a Product Mockup image in the options section for this asset.");
-        return;
-    }
-    if (asset.id === 7 && !asset.options?.petImageBase64) {
-        alert("Please upload a Pet Photo in the options section for this asset.");
-        return;
-    }
+  const generate3DGamingAsset = async (selfieBase64, genre) => {
+    const prompt = `Render a high-poly, low-texture 3D character model of the person in the provided photo, styled for a ${genre} video game asset. The output should be a detailed, photorealistic render of the 3D asset, ready for game engines. Focus on clean geometry and realistic materials.`;
+    return callGeminiAPI({
+        model: IMAGEN_MODEL,
+        prompt: prompt,
+        data: selfieBase64,
+        config: { imageSize: "1024x1024", aspectRatio: "1:1" },
+        isImageGeneration: true
+    });
+  };
 
-    // Set status to in_progress
-    setAssets(prevAssets => 
-      prevAssets.map(a => 
-        a.id === Math.floor(id) ? { ...a, status: 'in_progress', assetId: 'Generating...' } : a
-      )
-    );
+  const generateMusicVideo = async (selfieBase64, genre) => {
+    const prompt = `Generate a cinematic music video scene of the animated pop star (likeness based on the provided selfie) performing on a vibrant stage. The style should match the ${genre} genre, using dynamic lighting and motion blur effects. Output a single key frame image representing the style of the video.`;
+    return callGeminiAPI({
+        model: IMAGEN_MODEL,
+        prompt: prompt,
+        data: selfieBase64,
+        config: { imageSize: "1024x1024", aspectRatio: "16:9" },
+        isImageGeneration: true
+    });
+  };
+  
+  const generatePetStockImage = async (petImageBase64) => {
+    const prompt = `Generate a charming, high-quality, Disney-style cartoon version of the pet in the provided image. The style should be modern, friendly, and suitable for commercial stock use, sitting in a clean, brightly lit studio.`;
 
-    let newStatus = 'failed';
-    let newAssetId = 'FAILED_JOB';
-    let newAssetData = null;
-    let base64ImageResult = null;
-    
-    try {
-        if (asset.id === 7) { // Pet Stock Images (Image Generation)
-            base64ImageResult = await generatePetStockImage(asset.options.petImageBase64);
-            newStatus = 'success';
-            newAssetId = `PET-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+    return callGeminiAPI({
+        model: IMAGEN_MODEL,
+        prompt: prompt,
+        data: petImageBase64,
+        config: { imageSize: "1024x1024", aspectRatio: "1:1" },
+        isImageGeneration: true
+    });
+  };
 
-        } else if (asset.id === 6) { // Plush Toy Mockup (Image Generation)
-            base64ImageResult = await generatePlushToyMockup(selfieBase64);
-            newStatus = 'success';
-            newAssetId = `IMG-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+  const generatePlushToyMockup = async (selfieBase64) => {
+    const prompt = `Generate a photo of a cute, professionally designed, manufacturable plush toy of the person 
+in the provided photo. The plush toy should be made of soft, tactile materials (minky fabric) 
+and be displayed in professional e-commerce studio lighting with a clean white background. 
+Make it look like a high-quality, boxed collectible.`;
+    
+    return callGeminiAPI({
+        model: IMAGEN_MODEL,
+        prompt: prompt,
+        data: selfieBase64,
+        config: { imageSize: "1024x1024", aspectRatio: "1:1" },
+        isImageGeneration: true
+    });
+  };
 
-        } else if (asset.id === 2) { // Stock Image Series (Image Generation with Product)
-            base64ImageResult = await generateProductMockup(selfieBase64, asset.options.productImageBase64);
-            newStatus = 'success';
-            newAssetId = `STOCK-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+  const generateProductMockup = async (selfieBase64, productImageBase64) => {
+    const prompt = `Create a realistic commercial stock photo. Use the person's likeness from the first image. The person is posing naturally, looking directly at the camera, wearing or holding the product shown in the second image. The background should be a clean, commercial white studio setting, with professional lighting. Make the final output suitable for Getty Images.`;
 
-        } else if (asset.id === 3) { // How-To Videos (Image + Script Generation)
-            const result = await generateYogaScript(selfieBase64, asset.options.sessionType);
-            newStatus = 'success';
-            newAssetId = `FLOW-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-            newAssetData = { 
-                type: 'json', 
-                data: `// ** Still Picture Preview ** \n// (Image generated and stored, shown in modal)\n\n// ** Full Video Flow Script **\n${result.script}`,
-                imageBase64: result.imageBase64 // Store image for modal preview
-            };
+    // Package both images for multimodal input
+    let contents = [
+        { role: "user", 
+          parts: [
+            { text: prompt },
+            { inlineData: { mimeType: "image/jpeg", data: selfieBase64 } },
+            { inlineData: { mimeType: "image/jpeg", data: productImageBase64 } }
+          ]
+        }
+    ];
 
-        } else if (asset.id === 4) { // Adult PPV Art (Image Generation)
-            base64ImageResult = await generateTattooedLikeness(
-                selfieBase64,
-                asset.options.tattoosEnabled,
-                asset.options.gender
-            );
-            newStatus = 'success';
-            newAssetId = `PPV-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
-        
-        } else if (asset.id === 5) { // Music/Video Job (Mock)
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            newStatus = 'success';
-            newAssetId = `TRACK-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-            newAssetData = { type: 'text', data: `Track generated in ${asset.options.genre} style.` };
-        } else {
-            // Mock other jobs
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            newStatus = Math.random() > 0.1 ? 'success' : 'failed';
-            newAssetId = newStatus === 'success' ? `MOCK-${id}-${Math.random().toString(36).substring(2, 9).toUpperCase()}` : 'FAILED_JOB';
-        }
+    const url = `${API_BASE}${IMAGEN_MODEL}:predict?key=${API_KEY}`;
+    
+    // Imagen payload structure for two inputs (sent via contents array)
+    const payload = { 
+        instances: contents, 
+        parameters: { imageSize: "1024x1024", aspectRatio: "4:3", sampleCount: 1 } 
+    };
 
-    } catch (error) {
-        if (error.message.includes("Missing API Key")) {
-             newStatus = 'pending';
-             newAssetId = 'Missing API Key';
-        } else if (error.message.includes("Product Mockup image")) {
-             newStatus = 'pending';
-             newAssetId = 'Missing Product Image';
-        } else {
-            console.error(`AI Job ${asset.name} failed:`, error.message);
-            newStatus = 'failed';
-            newAssetId = `ERROR: ${error.message.substring(0, 20)}...`;
-        }
-    }
+    // Need to handle the custom multimodal input call for Imagen
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-    // Update final status and data
-    setAssets(prevAssets => 
-      prevAssets.map(a => {
-        if (a.id === Math.floor(id)) {
-          return { ...a, status: newStatus, assetId: newAssetId, assetData: newAssetData };
-        }
-        return a;
-      })
-    );
-  };
-  
-  const handlePreview = (asset) => {
-      let data = asset.assetData;
-      let type = data.type;
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            const result = await response.json();
+            const base64Data = result.predictions?.[0]?.bytesBase64Encoded;
+            if (base64Data) return base64Data;
 
-      // Handle combined image + script preview for How-To Videos
-      if (asset.id === 3 && data.imageBase64) {
-          data = { 
-              type: 'image', 
-              data: `data:image/png;base64,${data.imageBase64}`, 
-              script: asset.assetData.data // Pass script text for context
-          };
-      }
-      
-      setModalContent(data);
-      setIsModalState(true);
-  };
+        } catch (error) {
+            console.error(`Attempt ${attempt + 1} failed:`, error);
+            if (attempt === 2) throw new Error(`Failed to call Imagen API after multiple retries. ${error.message}`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+        }
+    }
+    throw new Error("API call failed unexpectedly.");
+  };
 
-  const totalAssets = assets.length;
-  const completedAssets = assets.filter(a => a.status === 'success').length;
-  const inProgressAssets = assets.filter(a => a.status === 'in_progress').length;
-  const completionRate = totalAssets > 0 ? ((completedAssets / totalAssets) * 100).toFixed(0) : 0;
-  
-  const currentVerification = VERIFICATION_LEVELS.find(v => v.level === verificationLevel) || VERIFICATION_LEVELS[0];
+  const generateYogaScript = async (selfieBase64, sessionType) => {
+    const sessionName = sessionType === 'yoga' ? 'Sun Salutation Morning Flow' : 'Core Focus Pilates Routine';
+    
+    const textPrompt = `Generate the first image of the video sequence: The person in the provided photo is in the starting pose of a '${sessionName}'. The image should be a professional, still picture with a bright, calming, tropical beach background.`;
+    
+    // Step 1: Generate the first image of the flow (the 'still picture')
+    const base64Image = await callGeminiAPI({
+        model: IMAGEN_MODEL,
+        prompt: textPrompt,
+        data: selfieBase64,
+        config: { imageSize: "1024x1024", aspectRatio: "1:1" },
+        isImageGeneration: true
+    });
 
-  if (!isAuthReady) {
-    return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Loading Authentication...</div>;
-  }
+    // Step 2: Generate the structured script (the 'flow video' details)
+    const scriptPrompt = `Based on the likeness in the provided photo, generate a detailed video storyboard and script 
+for a 15-minute '${sessionName}'. The output must be a JSON object containing 
+a sequence of 8 poses/exercises, including name, duration, and a description of the camera angle/shot type. 
+The person in the visualization should look like the user in the provided photo.`;
 
-  // --- Gather Uploaded and Generated Images for Gallery ---
-  const productAsset = assets.find(a => a.id === 2);
-  const petAsset = assets.find(a => a.id === 7);
-  
-  const uploadedImages = {
-      selfie: selfieBase64,
-      product: productAsset?.options?.productImageBase64,
-      pet: petAsset?.options?.petImageBase64
-  };
-  
-  const generatedAssets = assets.filter(a => a.assetData && (a.assetData.type === 'image' || a.assetData.imageBase64));
+    const schema = {
+        type: "ARRAY",
+        description: `A sequence of 8 moves for a beginner ${sessionType} session.`,
+        items: {
+            type: "OBJECT",
+            properties: {
+                moveName: { "type": "STRING", "description": "Name of the move (e.g., Mountain Pose or Hundred)." },
+                durationSeconds: { "type": "INTEGER", "description": "Duration to hold the move in seconds (e.g., 30)." },
+                videoShotDescription: { "type": "STRING", "description": "Detailed description of the animated scene and camera angle (e.g., 'Medium shot, person facing the camera, beach background.')." }
+            }
+        }
+    };
 
-  return (
-    <div className="min-h-screen bg-gray-900 font-sans p-4 sm:p-8 relative">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-extrabold text-white mb-2">
-          Likeness Monetization Agent (LMA)
-        </h1>
-        <p className="text-lg text-indigo-400 mb-8">
-          Asset Generation and Payout Tracking Dashboard
-        </p>
-        
-        {/* --- Header Cards (Redesigned for Verification Steps) --- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          
-          {/* Detailed Verification Steps (Larger Card) */}
-          <div className="md:col-span-2">
-            <HeaderCard 
-                title="Identity Verification Status" 
-                value={currentVerification.name.toUpperCase()}
-                icon={Shield} 
-                colorClass={currentVerification.color}
-                small={false}
-            >
-              <VerificationSteps currentLevel={verificationLevel} onSelfieUpload={handleSelfieUpload} />
-            </HeaderCard>
-          </div>
+    const jsonScript = await callGeminiAPI({
+        model: GEMINI_FLASH,
+        prompt: scriptPrompt,
+        data: selfieBase64,
+        mimeType: "image/jpeg",
+        config: { responseMimeType: "application/json", responseSchema: schema },
+        isImageGeneration: false
+    });
+    
+    return { imageBase64: base64Image, script: jsonScript };
+  };
 
-          {/* Job Performance Overview (Smaller Card) */}
-          <div className="md:col-span-1">
-             <HeaderCard 
-                title="Job Performance Overview" 
-                value={`${completedAssets} / ${totalAssets}`} 
-                icon={Activity} 
-                colorClass="text-indigo-400"
-                small={true}
-            >
-                <div className="pt-3 border-t border-gray-700 space-y-2">
-                    <p className="flex justify-between text-sm text-gray-300">
-                        <span>Jobs in Progress:</span>
-                        <span className="font-semibold text-yellow-400">{inProgressAssets}</span>
-                    </p>
-                    <p className="flex justify-between text-sm text-gray-300">
-                        <span>Completion Rate:</span>
-                        <span className="font-semibold text-white">{completionRate}%</span>
-                    </p>
-                </div>
-            </HeaderCard>
-          </div>
-        </div>
 
-        {/* --- Main Content Grid --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Asset Generation Column (2/3 width on large screen) */}
-          <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-2xl font-semibold text-white border-b border-gray-700 pb-3">
-              Multi-Modal Asset Generation Pipeline
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {assets.map(asset => (
-                <AssetCard 
-                    key={asset.id} 
-                    asset={asset} 
-                    onStart={handleStartJob} 
-                    onPreview={handlePreview}
-                    onOptionChange={handleOptionChange}
-                    onPush={handlePushJob}
-                />
-              ))}
-            </div>
-            <div className="bg-green-900/30 text-green-300 p-4 rounded-lg text-sm mt-4">
-                **SUCCESS:** The Gemini API Key has been successfully inserted. All jobs should now run!
-                <br/>**NOTE:** Please upload your **Selfie** first (via the Identity Verification card) to enable most jobs.
-            </div>
-          </div>
+  const generateTattooedLikeness = async (selfieBase64, tattoosEnabled, gender) => {
+    const tattooDescription = tattoosEnabled ? "with highly detailed full-body blackwork tattoos, emphasizing the curves of the body" : "without any visible tattoos, in a smooth, high-definition artistic style";
+    const figureType = gender === 'male' ? "a highly attractive male figure" : "a highly attractive female figure";
+    
+    // NOTE: This image generation prompt is highly suggestive but adheres to Gemini/Imagen safety rules (no nudity).
+    const prompt = `Generate a cinematic, highly suggestive stock photo. The subject must be the user in the provided photo, rendered as ${figureType}, ${tattooDescription}. The scene is intimate and private, with dramatic soft studio lighting. The subject is posed seductively in flattering lingerie or swimwear (non-nude). Ensure the image is visually stunning and hyper-realistic, suitable for the adult content market while complying with API safety guidelines.`;
 
-          {/* User/Royalty Column (1/3 width on large screen) */}
-          <div className="lg:col-span-1 space-y-6">
-            <h2 className="text-2xl font-semibold text-white border-b border-gray-700 pb-3">
-              Customer Data & Matching
-            </h2>
-            
-            <div className="p-6 bg-gray-800 rounded-xl shadow-lg">
-                <h4 className="text-xl font-bold text-white mb-3 flex items-center">
-                    <UserCheck className="w-5 h-5 mr-2 text-yellow-400" />
-                    Customer PII (Odoo Record)
-                </h4>
-                <p className="text-sm text-gray-400">
-                    Email: <span className="text-white">customer@example.com</span>
-                </p>
-                <p className="text-sm text-gray-400">
-                    User ID: <code className="text-yellow-400 truncate">{userId || 'N/A'}</code>
-                </p>
-                <div className="mt-4 pt-4 border-t border-gray-700">
-                     <p className="text-sm text-gray-400 flex justify-between items-center">
-                        <span className="font-medium">Likeness Folder:</span>
-                        <a href={assetFolderUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline flex items-center truncate max-w-[60%]">
-                            <Link className="w-4 h-4 mr-1"/> Odoo Asset Link
-                        </a>
-                    </p>
-                </div>
-            </div>
-            
-            <PayoutCard 
-                userId={userId || 'N/A'} 
-                payoutMethod={payoutMethod} 
-                totalEarnings={totalEarnings}
-                assetFolderUrl={assetFolderUrl}
-            />
+    return callGeminiAPI({
+        model: IMAGEN_MODEL,
+        prompt: prompt,
+        data: selfieBase64,
+        config: { imageSize: "1024x1024", aspectRatio: "4:3" },
+        isImageGeneration: true
+    });
+  };
 
-            <MatchmakingCard />
+  const callGeminiAPI = async ({ model, prompt, mimeType, data, config, isImageGeneration }) => {
+    // CRITICAL FIX: Check if API Key is empty and abort the request with a console message.
+    if (!API_KEY || API_KEY.trim() === "") {
+        console.error("CRITICAL ERROR: Gemini API Key is missing. Please add your valid Gemini API Key to the 'const API_KEY' variable near the top of the script.");
+        throw new Error("Missing API Key (401 Unauthorized)");
+    }
+    
+    const url = `${API_BASE}${model}:${isImageGeneration ? 'predict' : 'generateContent'}?key=${API_KEY}`;
+    
+    // Build contents array for text/multimodal models (non-Imagen)
+    let contents = [{ parts: [{ text: prompt }] }];
+    if (data) {
+        contents = [{
+            role: "user",
+            parts: [
+                { text: prompt },
+                { inlineData: { mimeType: mimeType || "image/jpeg", data: data } }
+            ]
+        }];
+    }
 
-            <AssetGallery 
-                selfie={uploadedImages.selfie}
-                product={uploadedImages.product}
-                pet={uploadedImages.pet}
-                assets={generatedAssets}
-            />
+    let payload = { contents };
 
-          </div>
-        </div>
-      </div>
-      
-      <Modal 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalState(false)} 
-          title="Generated Asset Preview" 
-          content={modalContent} 
-      />
-      
-      <ChatModal 
-          isOpen={isChatOpen && chatType === 'therapist'}
-          onClose={() => setIsChatOpen(false)}
-          title="AI Therapist Chat"
-          persona="AI Therapist"
-          initialPrompt="Hello! I'm here to support your mental wellness journey and guide you toward a verified matchmaking profile. How are you doing today?"
-          apiKey={API_KEY}
-      />
-       <ChatModal 
-          isOpen={isChatOpen && chatType === 'help'}
-          onClose={() => setIsChatOpen(false)}
-          title="Help Chat (LMA Project Agent)"
-          persona="Help Chat"
-          initialPrompt="Welcome! Ask me anything about the LMA project's goals, verification steps, revenue model, or asset generation process. I only use verified project data."
-          apiKey={API_KEY}
-      />
+    if (config) {
+        if (isImageGeneration) {
+            // Imagen model uses 'instances' and 'parameters'
+            payload = { 
+                instances: [{ prompt: prompt }], 
+                parameters: { ...config, sampleCount: 1 } 
+            };
+        } else {
+            // Standard generateContent model uses 'generationConfig'
+            payload.generationConfig = config;
+        }
+    }
+    
+    const headers = { 'Content-Type': 'application/json' };
 
-      {/* --- Floating Chat Bubble (Conceptual) --- */}
-      <button 
-        className="fixed bottom-6 right-6 p-4 bg-indigo-600 rounded-full shadow-lg text-white hover:bg-indigo-700 transition duration-300 z-40 transform hover:scale-110"
-        title="Open AI Prompt Generator / Help Chat"
-        onClick={() => { setIsChatOpen(true); setChatType('help'); }}
-      >
-        <Send className="w-6 h-6" />
-      </button>
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(payload)
+            });
 
-      {/* --- Floating Therapist Chat Bubble (Conceptual) --- */}
-      <button 
-        className="fixed bottom-6 right-20 p-4 bg-green-600 rounded-full shadow-lg text-white hover:bg-green-700 transition duration-300 z-40 transform hover:scale-110"
-        title="Open AI Therapist Chat"
-        onClick={() => { setIsChatOpen(true); setChatType('therapist'); }}
-      >
-        <MessageSquare className="w-6 h-6" />
-      </button>
+            if (!response.ok) {
+                // Handle non-200 responses
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-    </div>
-  );
+            const result = await response.json();
+            
+            if (isImageGeneration) {
+                 // Imagen-3.0 response structure
+                const base64Data = result.predictions?.[0]?.bytesBase64Encoded;
+                if (base64Data) return base64Data;
+            } else {
+                // generateContent (text/multimodal) response structure
+                const part = result.candidates?.[0]?.content?.parts?.[0];
+                if (part?.text) return part.text;
+            }
+
+            throw new Error("API response structure was invalid or empty.");
+
+        } catch (error) {
+            console.error(`Attempt ${attempt + 1} failed:`, error);
+            if (attempt === 2) throw new Error(`Failed to call Gemini API after multiple retries. ${error.message}`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt))); // Exponential backoff
+        }
+    }
+    throw new Error("API call failed unexpectedly.");
+  };
+
+  
+  // --- Option Change Handler for Asset Options ---
+  const handleOptionChange = (id, key, value) => {
+    setAssets(prevAssets => 
+        prevAssets.map(a => 
+            a.id === id ? { ...a, options: { ...a.options, [key]: value } } : a
+        )
+    );
+  };
+  
+  // --- Core Job Handlers ---
+  
+  const handlePushJob = (id) => {
+      const asset = assets.find(a => a.id === id);
+      alert(`Asset ${asset.name} (ID: ${asset.assetId}) pushed to Odoo API endpoint. This triggers Odoo to create a Discuss Channel, update the creator record, and prepare content for courses.`);
+      
+      // Optionally advance verification level after PUSHing enough assets
+      if (assets.filter(a => a.status === 'success').length > 3 && verificationLevel < 7) {
+          setVerificationLevel(7); // Mock progression to Therapist Session 1 complete
+      }
+  };
+
+  const handleStartJob = async (id) => {
+    const asset = assets.find(a => a.id === Math.floor(id));
+    if (!asset || asset.status === 'in_progress') return;
+
+    if (!selfieBase64 && asset.id !== 7) {
+        alert("Please upload your Selfie first via the Identity Verification card before running this job.");
+        return;
+    }
+    
+    // Check for specific required uploads
+    if (asset.id === 2 && !asset.options?.productImageBase64) {
+        alert("Please upload a Product Mockup image in the options section for this asset.");
+        return;
+    }
+    if (asset.id === 7 && !asset.options?.petImageBase64) {
+        alert("Please upload a Pet Photo in the options section for this asset.");
+        return;
+    }
+
+    // Set status to in_progress
+    setAssets(prevAssets => 
+      prevAssets.map(a => 
+        a.id === Math.floor(id) ? { ...a, status: 'in_progress', assetId: 'Generating...' } : a
+      )
+    );
+
+    let newStatus = 'failed';
+    let newAssetId = 'FAILED_JOB';
+    let newAssetData = null;
+    let base64ImageResult = null;
+    
+    try {
+        if (asset.id === 7) { // Pet Stock Images (Image Generation)
+            base64ImageResult = await generatePetStockImage(asset.options.petImageBase64);
+            newStatus = 'success';
+            newAssetId = `PET-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+
+        } else if (asset.id === 6) { // Plush Toy Mockup (Image Generation)
+            base64ImageResult = await generatePlushToyMockup(selfieBase64);
+            newStatus = 'success';
+            newAssetId = `IMG-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+
+        } else if (asset.id === 2) { // Stock Image Series (Image Generation with Product)
+            base64ImageResult = await generateProductMockup(selfieBase64, asset.options.productImageBase64);
+            newStatus = 'success';
+            newAssetId = `STOCK-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+
+        } else if (asset.id === 3) { // How-To Videos (Image + Script Generation)
+            const result = await generateYogaScript(selfieBase64, asset.options.sessionType);
+            newStatus = 'success';
+            newAssetId = `FLOW-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+            newAssetData = { 
+                type: 'json', 
+                data: `// ** Still Picture Preview ** \n// (Image generated and stored, shown in modal)\n\n// ** Full Video Flow Script **\n${result.script}`,
+                imageBase64: result.imageBase64 // Store image for modal preview
+            };
+
+        } else if (asset.id === 4) { // Adult PPV Art (Image Generation + Browser Agent Mock)
+            
+            // Step 1: Generate image (simulates Stable Diffusion/ControlNet output)
+            base64ImageResult = await generateTattooedLikeness(
+                selfieBase64,
+                asset.options.tattoosEnabled,
+                asset.options.gender
+            );
+            
+            // Step 2: Mock browser agent upload (takes 3 stages)
+            setAssets(prev => prev.map(a => a.id === id ? { ...a, status: 'browser_agent_upload', assetId: 'Agent Logging In...' } : a));
+            await new Promise(r => setTimeout(r, 1500));
+            
+            setAssets(prev => prev.map(a => a.id === id ? { ...a, status: 'browser_agent_upload', assetId: 'Uploading Content...' } : a));
+            await new Promise(r => setTimeout(r, 2000));
+
+            newStatus = 'success';
+            newAssetId = `PPV-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+        
+        } else if (asset.id === 5) { // Music/Video Job (Image Generation)
+             base64ImageResult = await generateMusicVideo(selfieBase64, asset.options.genre);
+            newStatus = 'success';
+            newAssetId = `TRACK-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+
+        } else if (asset.id === 1) { // 3D Gaming Asset (Image Generation)
+             base64ImageResult = await generate3DGamingAsset(selfieBase64, asset.options.genre);
+            newStatus = 'success';
+            newAssetId = `3D-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+            newAssetData = { type: 'image', data: `data:image/png;base64,${base64ImageResult}` };
+        } else {
+            // Mock other jobs
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            newStatus = Math.random() > 0.1 ? 'success' : 'failed';
+            newAssetId = newStatus === 'success' ? `MOCK-${id}-${Math.random().toString(36).substring(2, 9).toUpperCase()}` : 'FAILED_JOB';
+        }
+
+    } catch (error) {
+        if (error.message.includes("Missing API Key")) {
+             newStatus = 'pending';
+             newAssetId = 'Missing API Key';
+        } else if (error.message.includes("Product Mockup image")) {
+             newStatus = 'pending';
+             newAssetId = 'Missing Product Image';
+        } else {
+            console.error(`AI Job ${asset.name} failed:`, error.message);
+            newStatus = 'failed';
+            newAssetId = `ERROR: ${error.message.substring(0, 20)}...`;
+        }
+    }
+
+    // Update final status and data
+    setAssets(prevAssets => 
+      prevAssets.map(a => {
+        if (a.id === Math.floor(id)) {
+          return { ...a, status: newStatus, assetId: newAssetId, assetData: newAssetData };
+        }
+        return a;
+      })
+    );
+  };
+  
+  const handlePreview = (asset) => {
+      let data = asset.assetData;
+      let type = data.type;
+
+      // Handle combined image + script preview for How-To Videos
+      if (asset.id === 3 && data.imageBase64) {
+          data = { 
+              type: 'image', 
+              data: `data:image/png;base64,${data.imageBase64}`, 
+              script: asset.assetData.data // Pass script text for context
+          };
+      }
+      
+      setModalContent(data);
+      setIsModalState(true);
+  };
+
+    // --- Match Chat Handler ---
+    const handleOpenMatchChat = ({ name, type, status }) => {
+        setMatchData({ name, matchType: type, matchStatus: status });
+        setChatType('match');
+        setIsChatOpen(true);
+    };
+
+
+  const totalAssets = assets.length;
+  const completedAssets = assets.filter(a => a.status === 'success').length;
+  const inProgressAssets = assets.filter(a => a.status === 'in_progress' || a.status === 'browser_agent_upload').length;
+  const completionRate = totalAssets > 0 ? ((completedAssets / totalAssets) * 100).toFixed(0) : 0;
+  
+  const currentVerification = VERIFICATION_LEVELS.find(v => v.level === verificationLevel) || VERIFICATION_LEVELS[0];
+
+  if (!isAuthReady) {
+    return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Loading Authentication...</div>;
+  }
+
+  // --- Gather Uploaded and Generated Images for Gallery ---
+  const productAsset = assets.find(a => a.id === 2);
+  const petAsset = assets.find(a => a.id === 7);
+  
+  const uploadedImages = {
+      selfie: selfieBase64,
+      product: productAsset?.options?.productImageBase64,
+      pet: petAsset?.options?.petImageBase64
+  };
+  
+  const generatedAssets = assets.filter(a => a.assetData && (a.assetData.type === 'image' || a.assetData.imageBase64));
+
+
+  return (
+    <div className="min-h-screen bg-gray-900 font-sans p-4 sm:p-8 relative">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-extrabold text-white mb-2">
+          Likeness Monetization Agent (LMA)
+        </h1>
+        <p className="text-lg text-indigo-400 mb-8">
+          Asset Generation and Payout Tracking Dashboard
+        </p>
+        
+        {/* --- Header Cards (Redesigned for Verification Steps) --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          
+          {/* Detailed Verification Steps (Larger Card) */}
+          <div className="md:col-span-2">
+            <HeaderCard 
+                title="Identity Verification Status" 
+                value={currentVerification.name.toUpperCase()}
+                icon={Shield} 
+                colorClass={currentVerification.color}
+                small={false}
+            >
+              <VerificationSteps 
+                currentLevel={verificationLevel} 
+                onSelfieUpload={handleSelfieUpload} 
+                onCVUpload={handleCVUpload}
+              />
+            </HeaderCard>
+          </div>
+
+          {/* Job Performance Overview (Moved and Simplified) */}
+          <div className="md:col-span-1 order-first md:order-last">
+             <HeaderCard 
+                title="Job Status" 
+                value={`${completedAssets} / ${totalAssets}`} 
+                icon={Activity} 
+                colorClass="text-indigo-400"
+                small={true}
+            >
+                <div className="space-y-1">
+                    <p className="flex justify-between text-sm text-gray-300">
+                        <span>In Progress:</span>
+                        <span className="font-semibold text-yellow-400">{inProgressAssets}</span>
+                    </p>
+                    <p className="flex justify-between text-sm text-gray-300">
+                        <span>Rate:</span>
+                        <span className="font-semibold text-white">{completionRate}%</span>
+                    </p>
+                    {assets.some(a => a.status === 'browser_agent_upload') && (
+                        <p className="text-xs text-indigo-400 font-semibold">Browser Agent Active...</p>
+                    )}
+                </div>
+            </HeaderCard>
+          </div>
+        </div>
+
+        {/* --- Main Content Grid --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          {/* Asset Generation Column (2/3 width on large screen) */}
+          <div className="lg:col-span-2 space-y-6">
+            <h2 className="text-2xl font-semibold text-white border-b border-gray-700 pb-3">
+              Multi-Modal Asset Generation Pipeline
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {assets.map(asset => (
+                <AssetCard 
+                    key={asset.id} 
+                    asset={asset} 
+                    onStart={handleStartJob} 
+                    onPreview={handlePreview}
+                    onOptionChange={handleOptionChange}
+                    onPush={handlePushJob}
+                />
+              ))}
+            </div>
+            <div className="bg-green-900/30 text-green-300 p-4 rounded-lg text-sm mt-4">
+                **SUCCESS:** The Gemini API Key has been successfully inserted. All jobs should now run!
+                <br/>**NOTE:** Please upload your **Selfie** first (via the Identity Verification card) to enable most jobs.
+            </div>
+          </div>
+
+          {/* User/Royalty Column (1/3 width on large screen) */}
+          <div className="lg:col-span-1 space-y-6">
+            <h2 className="text-2xl font-semibold text-white border-b border-gray-700 pb-3">
+              Customer Data & Matching
+            </h2>
+            
+            <div className="p-6 bg-gray-800 rounded-xl shadow-lg">
+                <h4 className="text-xl font-bold text-white mb-3 flex items-center">
+                    <UserCheck className="w-5 h-5 mr-2 text-yellow-400" />
+                    Customer PII (Odoo Record)
+                </h4>
+                <p className="text-sm text-gray-400">
+                    Email: <span className="text-white">customer@example.com</span>
+                </p>
+                <p className="text-sm text-gray-400">
+                    User ID: <code className="text-yellow-400 truncate">{userId || 'N/A'}</code>
+                </p>
+                {cvUploaded && (
+                    <p className="text-sm text-green-400 mt-2 flex items-center">
+                        <FileText className="w-4 h-4 mr-1"/> CV Attached
+                    </p>
+                )}
+            </div>
+            
+            <PayoutCard 
+                userId={userId || 'N/A'} 
+                payoutMethod={payoutMethod} 
+                totalEarnings={totalEarnings}
+                totalViews={totalViews}
+                onPayoutChange={setPayoutMethod}
+            />
+
+            <MatchmakingCard onOpenMatchChat={handleOpenMatchChat} matchData={matchData}/>
+
+            <AssetGallery 
+                selfie={uploadedImages.selfie}
+                product={uploadedImages.product}
+                pet={uploadedImages.pet}
+                assets={generatedAssets}
+            />
+
+          </div>
+        </div>
+      </div>
+      
+      <Modal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalState(false)} 
+          title="Generated Asset Preview" 
+          content={modalContent} 
+      />
+      
+      <ChatModal 
+          isOpen={isChatOpen && chatType === 'therapist'}
+          onClose={() => setIsChatOpen(false)}
+          title="AI Therapist Chat"
+          persona="AI Therapist"
+          initialPrompt="Hello! I'm here to support your mental wellness journey and guide you toward a verified matchmaking profile. How are you doing today?"
+          apiKey={API_KEY}
+      />
+       <ChatModal 
+          isOpen={isChatOpen && chatType === 'help'}
+          onClose={() => setIsChatOpen(false)}
+          title="Help Chat (LMA Project Agent)"
+          persona="Help Chat"
+          initialPrompt="Welcome! Ask me anything about the LMA project's goals, verification steps, revenue model, or asset generation process. I only use verified project data."
+          apiKey={API_KEY}
+      />
+      
+      {matchData && (
+        <ChatModal
+            isOpen={isChatOpen && chatType === 'match'}
+            onClose={() => setIsChatOpen(false)}
+            title={`Chat with ${matchData.name}`}
+            persona="Match Chat"
+            initialPrompt={''} // Initial prompt is set inside handleSendMessage based on match data
+            apiKey={API_KEY}
+            matchData={matchData}
+        />
+      )}
+
+
+      {/* --- Floating Chat Bubble (Conceptual) --- */}
+      <button 
+        className="fixed bottom-6 right-6 p-4 bg-indigo-600 rounded-full shadow-lg text-white hover:bg-indigo-700 transition duration-300 z-40 transform hover:scale-110"
+        title="Open AI Prompt Generator / Help Chat"
+        onClick={() => { setIsChatOpen(true); setChatType('help'); }}
+      >
+        <Send className="w-6 h-6" />
+      </button>
+
+      {/* --- Floating Therapist Chat Bubble (Conceptual) --- */}
+      <button 
+        className="fixed bottom-6 right-20 p-4 bg-green-600 rounded-full shadow-lg text-white hover:bg-green-700 transition duration-300 z-40 transform hover:scale-110"
+        title="Open AI Therapist Chat"
+        onClick={() => { setIsChatOpen(true); setChatType('therapist'); }}
+      >
+        <MessageSquare className="w-6 h-6" />
+      </button>
+
+    </div>
+  );
 };
 
 // --- Render the React Component (FIXED) ---
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 root.render(<App />);
-    </script>
+    </script>
 </body>
 </html>
-
 
