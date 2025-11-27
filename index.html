@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Likeness Monetization Agent (LMA) - Creator Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; }
+        
+        /* Glassmorphism Logic */
+        .glass-panel { 
+            background: rgba(30, 41, 59, 0.7); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .glass-input { 
+            background: rgba(15, 23, 42, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: white; 
+        }
+        .glass-input:focus { outline: none; border-color: #818cf8; }
+
+        /* Animations */
+        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        
+        // --- CONFIGURATION ---
+        const API_KEY = "AIzaSyCaDwuhn_Moho7LAT8pZsnPJUX-kJHU6DM"; 
+        const GEMINI_MODEL = "gemini-1.5-flash";
+        
+        // Fallback images for demo purposes if API image generation hits CORS/Auth limits in browser
+        const PLACEHOLDER_SCENARIOS = {
+            "Pet Stock": "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80",
+            "Product Model": "https://images.unsplash.com/photo-1555676650-9b5590e7c4f9?auto=format&fit=crop&w=600&q=80",
+            "Yoga Flow": "https://images.unsplash.com/photo-1544367563-12123d8965cd?auto=format&fit=crop&w=600&q=80",
+            "Adult PPV": "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80",
+            "Random Stock": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+            "3D Gaming": "https://images.unsplash.com/photo-1612152605347-f932c6f655b7?auto=format&fit=crop&w=600&q=80",
+            "Plush Toy": "https://images.unsplash.com/photo-1559715541-5daf8a0296d0?auto=format&fit=crop&w=600&q=80",
+            "Music Video": "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?auto=format&fit=crop&w=600&q=80"
+        };
+
+        // --- SYSTEM PROMPTS ---
+        const PROMPT_THERAPIST = `You are an empathetic AI Therapist for the LMA platform. 
+        Goal: Help the user find their 'Attachment Style' and 'MBTI'.
+        Tone: Professional, warm, curious.
+        Start by asking how they are feeling today. Keep responses short (under 40 words).`;
+
+        const PROMPT_HELP = `You are the LMA Support Bot. 
+        Context: LMA (Likeness Monetization Agent) helps users verify identity (Face/Body/ID) to create AI assets (Adult, Music, Gaming).
+        Goal: Answer questions about Verification steps, Pricing Tiers, and Payouts.
+        Keep answers helpful and concise.`;
+
+        // --- COMPONENT: ICON WRAPPER ---
+        const Icon = ({ name, size = 18, className = "" }) => {
+            // Mapping Lucide icons to simple SVGs for standalone portability without build step
+            const icons = {
+                mail: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 7L2 7"/></svg>,
+                camera: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>,
+                scan: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>,
+                "id-card": <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6.17 15a3 3 0 0 1 5.66 0"/><circle cx="9" cy="9" r="2"/><rect width="20" height="14" x="2" y="5" rx="2"/></svg>,
+                "file-text": <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>,
+                "share-2": <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>,
+                brain: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+                check: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 6 9 17l-5-5"/></svg>,
+                lock: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+                upload: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>,
+                send: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>,
+                help: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>,
+                download: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>,
+                trash: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>,
+                shopping: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+                dog: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M10 5.172C10 3.782 8.423 2.679 6.5 3c-2.823.47-4.113 6.006-4 7 .08.703 1.725 1.722 3.656 1 1.261-.472 1.96-1.45 2.344-2.5"/><path d="M14.267 5.172c0-1.39 1.577-2.493 3.5-2.172 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.96-1.45-2.344-2.5"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/><path d="M4.42 11.247A4.335 4.335 0 0 1 6.944 9a4.423 4.423 0 0 1 2.997.686 1.991 1.991 0 0 1 2.058.001A4.423 4.423 0 0 1 15.056 9a4.335 4.335 0 0 1 2.525 2.247"/><path d="M14 14.5c-.789 2.653-2.61 4.63-4.62 4.63-2.01 0-3.83-1.977-4.62-4.63"/></svg>,
+                zap: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+                activity: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+                image: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>,
+                box: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg>,
+                music: <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            };
+            return icons[name] || <span className="text-xs">?</span>;
+        };
+
+        // --- API HELPER: GEMINI (Chat) ---
+        const callGeminiChat = async (history, systemInstruction) => {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${API_KEY}`;
+            const contents = history.map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.text }]
+            }));
+            const payload = { contents, systemInstruction: { parts: [{ text: systemInstruction }] } };
+            try {
+                const response = await fetch(url, {
+                    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (e) { return "Error connecting to AI. Please check API key."; }
+        };
+
+        // --- COMPONENT: CHAT BUBBLE ---
+        const ChatBubble = ({ type, title, initialMessage, matchData = null, onClose = null }) => {
+            const [isOpen, setIsOpen] = useState(!!matchData);
+            const [messages, setMessages] = useState([{ role: 'system', text: initialMessage }]);
+            const [input, setInput] = useState("");
+            const [isTyping, setIsTyping] = useState(false);
+
+            const handleSend = async () => {
+                if (!input.trim()) return;
+                const userMsg = { role: 'user', text: input };
+                const newHistory = [...messages, userMsg];
+                setMessages(newHistory);
+                setInput("");
+                setIsTyping(true);
+
+                let prompt = "";
+                if (matchData) prompt = `You are ${matchData.name}. Be friendly, skip small talk, and ask about a ${matchData.type} connection.`;
+                else if (type === 'therapist') prompt = PROMPT_THERAPIST;
+                else prompt = PROMPT_HELP;
+
+                const response = await callGeminiChat(newHistory, prompt);
+                setMessages(prev => [...prev, { role: 'model', text: response }]);
+                setIsTyping(false);
+            };
+
+            if (matchData && !isOpen) return null; // Hide match chat if closed
+
+            return (
+                <div className={`fixed bottom-4 ${type === 'match' ? 'right-20' : type === 'therapist' ? 'left-4' : 'right-4'} z-50 flex flex-col items-end`}>
+                    {isOpen && (
+                        <div className="glass-panel mb-4 p-4 rounded-xl w-80 h-96 flex flex-col shadow-2xl animate-fade-in">
+                            <div className="flex justify-between items-center border-b border-gray-600 pb-2 mb-2">
+                                <h3 className={`font-bold text-sm ${type === 'therapist' ? 'text-green-400' : 'text-indigo-400'}`}>
+                                    {matchData ? `Chat: ${matchData.name}` : title}
+                                </h3>
+                                <button onClick={() => { setIsOpen(false); if(onClose) onClose(); }} className="text-gray-400 hover:text-white">&times;</button>
+                            </div>
+                            <div className="flex-1 overflow-y-auto space-y-3 text-xs p-1">
+                                {messages.map((m, i) => (
+                                    <div key={i} className={`p-2 rounded-lg ${m.role === 'user' ? 'bg-indigo-600 ml-auto text-white' : 'bg-gray-700 mr-auto text-gray-200'} max-w-[85%]`}>
+                                        {m.text}
+                                    </div>
+                                ))}
+                                {isTyping && <div className="text-gray-500 animate-pulse text-xs">AI is typing...</div>}
+                            </div>
+                            <div className="mt-2 flex gap-2">
+                                <input type="text" className="flex-1 glass-input rounded px-2 py-2 text-xs" value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSend()} placeholder="Type..." />
+                                <button onClick={handleSend} className="bg-indigo-600 p-2 rounded hover:bg-indigo-500 text-white"><Icon name="send" size={14} /></button>
+                            </div>
+                        </div>
+                    )}
+                    {!matchData && (
+                        <button onClick={() => setIsOpen(!isOpen)} className={`p-3 rounded-full shadow-lg transition-all hover:scale-110 ${type === 'therapist' ? 'bg-green-600' : 'bg-blue-600'}`}>
+                            <Icon name={type === 'therapist' ? 'brain' : 'help'} color="white" />
+                        </button>
+                    )}
+                </div>
+            );
+        };
+
+        // --- MAIN APP ---
+        const App = () => {
+            const [userData, setUserData] = useState({ selfie: null, pet: null, product: null, cv: null, body: null });
+            const [verificationStep, setVerificationStep] = useState(0);
+            const [generatedAssets, setGeneratedAssets] = useState([]);
+            const [payoutMethod, setPayoutMethod] = useState("");
+            const [matchData, setMatchData] = useState(null);
+            
+            // Job Options State
+            const [yogaOpts, setYogaOpts] = useState({ type: 'Yoga', focus: 'Full Body', speed: 'Normal', audio: true });
+            const [ppvOpts, setPpvOpts] = useState({ gender: 'Female', tattoos: false });
+
+            useEffect(() => {
+                // Load LocalStorage
+                const savedData = JSON.parse(localStorage.getItem('lma_data') || "{}");
+                if (savedData.verificationStep) setVerificationStep(savedData.verificationStep);
+                if (savedData.userData) setUserData(savedData.userData);
+                if (savedData.assets) setGeneratedAssets(savedData.assets);
+                if (savedData.payout) setPayoutMethod(savedData.payout);
+            }, []);
+
+            const saveData = (newData) => {
+                const merged = { ...userData, ...newData };
+                setUserData(merged);
+                localStorage.setItem('lma_data', JSON.stringify({ userData: merged, verificationStep, assets: generatedAssets, payout: payoutMethod }));
+            };
+
+            const handleUpload = (e, type) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    saveData({ [type]: reader.result });
+                    if (type === 'selfie') { setVerificationStep(prev => Math.max(prev, 2)); }
+                    if (type === 'body') { setVerificationStep(prev => Math.max(prev, 3)); }
+                    if (type === 'cv') { setVerificationStep(prev => Math.max(prev, 5)); } // Jump to 5
+                    // Verify step 1 happens automatically on load if email set
+                };
+                reader.readAsDataURL(file);
+            };
+
+            const verifyStep1 = () => {
+                const email = prompt("Enter Email or Phone to Verify:");
+                if (email) {
+                    setVerificationStep(prev => Math.max(prev, 1));
+                    alert(`Verification Code Sent to ${email} (Mocked)`);
+                }
+            };
+
+            const runMatchmaking = () => {
+                // Simulate Match
+                setTimeout(() => {
+                    setMatchData({ name: "Sarah_Bizz", type: "Business", status: "Matched" });
+                }, 2000);
+            };
+
+            const downloadFile = (asset) => {
+                const link = document.createElement('a');
+                link.href = asset.image;
+                link.download = `LMA_${asset.type}_${asset.id}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
+            const runJob = (type) => {
+                const newAsset = { id: Date.now(), type, status: 'Processing...', image: PLACEHOLDER_IMG };
+                setGeneratedAssets(prev => [newAsset, ...prev]);
+                
+                // Simulate Gen Time & Auto-Download
+                setTimeout(() => {
+                    setGeneratedAssets(prev => {
+                        const updated = prev.map(a => a.id === newAsset.id ? { ...a, status: 'Completed', image: userData.pet && type === 'Pet Stock' ? userData.pet : PLACEHOLDER_IMG } : a);
+                        localStorage.setItem('lma_data', JSON.stringify({ userData, verificationStep, assets: updated, payout: payoutMethod }));
+                        return updated;
+                    });
+                    // Auto download trigger
+                    setTimeout(() => downloadFile({ ...newAsset, image: PLACEHOLDER_IMG }), 500);
+                }, 3000);
+            };
+
+            const clearLocalData = () => {
+                if(confirm("Clear all local data?")) {
+                    localStorage.clear();
+                    window.location.reload();
+                }
+            };
+
+            return (
+                <div className="min-h-screen p-6 max-w-7xl mx-auto pb-24">
+                    <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-700 pb-6 mb-8">
+                        <div>
+                            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">LMA Creator Preview</h1>
+                            <p className="text-gray-400 text-sm">One Identity. Many Outputs. <span className="bg-green-900/50 text-green-400 px-2 rounded text-xs ml-2">V0 MVP</span></p>
+                        </div>
+                        <div className="mt-4 md:mt-0 flex gap-4 items-center">
+                            <button onClick={clearLocalData} className="text-xs text-red-400 hover:text-red-300 flex gap-1"><Icon name="trash" size={14}/> Reset Data</button>
+                            <div className="glass-panel px-4 py-2 rounded-lg text-right">
+                                <p className="text-gray-400 text-xs font-bold uppercase">Total Views</p>
+                                <p className="text-yellow-400 font-mono font-bold text-lg">1.2M</p>
+                            </div>
+                            <div className="glass-panel px-4 py-2 rounded-lg text-right">
+                                <p className="text-gray-400 text-xs font-bold uppercase">Est. Earnings</p>
+                                <p className="text-green-400 font-mono font-bold text-xl">$420.69</p>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        
+                        {/* LEFT: VERIFICATION */}
+                        <div className="lg:col-span-4 space-y-6">
+                            <div className="glass-panel p-6 rounded-xl border border-gray-700/50">
+                                <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Icon name="id-card" className="text-indigo-400"/> Verification</h2>
+                                <div className="space-y-2 mb-6">
+                                    <button onClick={verifyStep1} className={`w-full p-2 rounded flex justify-between items-center text-sm ${verificationStep >= 1 ? 'bg-green-900/30 border border-green-500/30' : 'bg-gray-800'}`}>
+                                        <span className="flex gap-2"><Icon name="mail" size={16}/> Email/SMS</span> {verificationStep >= 1 && <Icon name="check" className="text-green-400" size={16}/>}
+                                    </button>
+                                    <label className={`w-full p-2 rounded flex justify-between items-center text-sm cursor-pointer ${verificationStep >= 2 ? 'bg-green-900/30 border border-green-500/30' : 'bg-gray-800'}`}>
+                                        <span className="flex gap-2"><Icon name="camera" size={16}/> Selfie Upload</span> 
+                                        <input type="file" className="hidden" onChange={e => handleUpload(e, 'selfie')}/>
+                                        {verificationStep >= 2 && <Icon name="check" className="text-green-400" size={16}/>}
+                                    </label>
+                                    <label className={`w-full p-2 rounded flex justify-between items-center text-sm cursor-pointer ${verificationStep >= 3 ? 'bg-green-900/30 border border-green-500/30' : 'bg-gray-800'}`}>
+                                        <span className="flex gap-2"><Icon name="scan" size={16}/> Body Scan</span> 
+                                        <input type="file" className="hidden" onChange={e => handleUpload(e, 'body')}/>
+                                        {verificationStep >= 3 && <Icon name="check" className="text-green-400" size={16}/>}
+                                    </label>
+                                    <label className={`w-full p-2 rounded flex justify-between items-center text-sm cursor-pointer ${verificationStep >= 5 ? 'bg-green-900/30 border border-green-500/30' : 'bg-gray-800'}`}>
+                                        <span className="flex gap-2"><Icon name="file-text" size={16}/> Upload CV</span> 
+                                        <input type="file" className="hidden" onChange={e => handleUpload(e, 'cv')}/>
+                                        {verificationStep >= 5 && <Icon name="check" className="text-green-400" size={16}/>}
+                                    </label>
+                                </div>
+
+                                <div className="glass-input p-4 rounded-lg space-y-3">
+                                    <h3 className="font-bold text-sm text-gray-300">Payout Details</h3>
+                                    <input type="text" placeholder="Venmo / Zelle ID" className="w-full bg-transparent border-b border-gray-600 p-1 text-sm focus:outline-none focus:border-indigo-500" value={payoutMethod} onChange={e => { setPayoutMethod(e.target.value); saveData({payout: e.target.value}); }} />
+                                </div>
+                            </div>
+
+                            {/* MATCHMAKING */}
+                            <div className="glass-panel p-6 rounded-xl border border-pink-500/30">
+                                <h3 className="font-bold mb-2 flex gap-2 items-center text-pink-400"><Icon name="brain" size={18}/> Matchmaking</h3>
+                                <p className="text-xs text-gray-400 mb-4">Find BFFs or Bizz partners based on your verified data.</p>
+                                {matchData ? (
+                                    <div onClick={() => setMatchData({...matchData, open: true})} className="bg-pink-900/20 border border-pink-500/50 p-3 rounded-lg cursor-pointer hover:bg-pink-900/40">
+                                        <div className="flex justify-between items-center">
+                                            <span className="font-bold text-sm">{matchData.name}</span>
+                                            <span className="text-[10px] bg-pink-500 text-white px-2 rounded-full">Matched</span>
+                                        </div>
+                                        <p className="text-xs text-pink-200 mt-1">Click to chat</p>
+                                    </div>
+                                ) : (
+                                    <button onClick={runMatchmaking} className="w-full py-2 bg-pink-600 rounded text-xs font-bold hover:bg-pink-500">Find Match</button>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* RIGHT: GENERATION */}
+                        <div className="lg:col-span-8 space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                
+                                {/* PET STOCK */}
+                                <div className="glass-panel p-5 rounded-xl border-t-4 border-t-yellow-500 relative">
+                                    <div className="flex justify-between mb-2">
+                                        <h3 className="font-bold flex gap-2 items-center"><Icon name="dog"/> Pet Stock</h3>
+                                        <span className="text-[10px] bg-yellow-500/20 text-yellow-300 px-2 rounded h-fit">Free</span>
+                                    </div>
+                                    <div className="h-32 bg-gray-800/50 rounded mb-3 flex items-center justify-center overflow-hidden">
+                                        {userData.pet ? <img src={userData.pet} className="w-full h-full object-cover opacity-80"/> : <span className="text-xs text-gray-500">No Pet</span>}
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <label className="flex-1 bg-gray-700 hover:bg-gray-600 rounded text-xs flex items-center justify-center cursor-pointer">
+                                            Upload <input type="file" className="hidden" onChange={e => handleUpload(e, 'pet')}/>
+                                        </label>
+                                        <button onClick={() => runJob('Pet Stock')} disabled={!userData.pet} className={`flex-1 py-2 rounded text-xs font-bold ${userData.pet ? 'bg-indigo-600' : 'bg-gray-700 text-gray-500'}`}>Generate</button>
+                                    </div>
+                                </div>
+
+                                {/* PRODUCT MODEL */}
+                                <div className="glass-panel p-5 rounded-xl border-t-4 border-t-blue-500">
+                                    <div className="flex justify-between mb-2">
+                                        <h3 className="font-bold flex gap-2 items-center"><Icon name="shopping"/> Product Model</h3>
+                                    </div>
+                                    <div className="text-xs bg-gray-800 p-2 rounded mb-3 text-gray-400">⚠️ Must upload product image.</div>
+                                    <label className={`block w-full p-2 rounded text-xs text-center cursor-pointer border mb-3 ${userData.product ? 'border-blue-500 bg-blue-900/20' : 'border-gray-600'}`}>
+                                        {userData.product ? "Product Loaded" : "Upload Product"} <input type="file" className="hidden" onChange={e => handleUpload(e, 'product')}/>
+                                    </label>
+                                    <button onClick={() => runJob('Product Model')} disabled={!userData.selfie || !userData.product} className={`w-full py-2 rounded text-xs font-bold ${userData.selfie && userData.product ? 'bg-indigo-600' : 'bg-gray-700 text-gray-500'}`}>Generate</button>
+                                </div>
+
+                                {/* YOGA */}
+                                <div className="glass-panel p-5 rounded-xl border-t-4 border-t-green-500">
+                                    <h3 className="font-bold flex gap-2 items-center mb-3"><Icon name="activity"/> Yoga Flow</h3>
+                                    <div className="grid grid-cols-2 gap-2 mb-3">
+                                        <select className="glass-input p-1 rounded text-xs" onChange={e => setYogaOptions({...yogaOptions, type: e.target.value})}><option>Yoga</option><option>Pilates</option></select>
+                                        <select className="glass-input p-1 rounded text-xs" onChange={e => setYogaOptions({...yogaOptions, focus: e.target.value})}><option>Full Body</option><option>Core</option></select>
+                                        <select className="glass-input p-1 rounded text-xs"><option>Normal</option><option>Slow</option></select>
+                                        <div className="flex items-center text-xs gap-2"><input type="checkbox" checked readOnly/> Audio</div>
+                                    </div>
+                                    <button onClick={() => runJob('Yoga Flow')} disabled={!userData.selfie} className={`w-full py-2 rounded text-xs font-bold ${userData.selfie ? 'bg-indigo-600' : 'bg-gray-700 text-gray-500'}`}>Generate Video</button>
+                                </div>
+
+                                {/* ADULT PPV */}
+                                <div className="glass-panel p-5 rounded-xl border-t-4 border-t-pink-500">
+                                    <div className="flex justify-between mb-3">
+                                        <h3 className="font-bold flex gap-2 items-center"><Icon name="zap"/> Adult PPV</h3>
+                                        <span className="text-[10px] bg-pink-500/20 text-pink-300 px-2 rounded h-fit">NSFW</span>
+                                    </div>
+                                    <div className="space-y-2 mb-3">
+                                        <select className="w-full glass-input p-1 rounded text-xs" onChange={e => setPpvOptions({...ppvOptions, gender: e.target.value})}><option>Female Likeness</option><option>Male Likeness</option></select>
+                                        <div className="flex justify-between text-xs text-gray-400 bg-gray-800 p-2 rounded">
+                                            <span>Add Tattoos?</span> <input type="checkbox"/>
+                                        </div>
+                                    </div>
+                                    <button onClick={() => runJob('Adult PPV')} disabled={!userData.selfie} className={`w-full py-2 rounded text-xs font-bold ${userData.selfie ? 'bg-pink-600' : 'bg-gray-700 text-gray-500'}`}>Generate</button>
+                                </div>
+
+                                {/* RANDOM STOCK */}
+                                <div className="glass-panel p-5 rounded-xl border-t-4 border-t-purple-500">
+                                    <h3 className="font-bold flex gap-2 items-center mb-2"><Icon name="image"/> Random Stock</h3>
+                                    <p className="text-xs text-gray-400 mb-3">Generate random lifestyle photos.</p>
+                                    <button onClick={() => runJob('Random Stock')} disabled={!userData.selfie} className={`w-full py-2 rounded text-xs font-bold ${userData.selfie ? 'bg-purple-600' : 'bg-gray-700 text-gray-500'}`}>Surprise Me</button>
+                                </div>
+
+                                 {/* COMING SOON ITEMS */}
+                                 <div className="glass-panel p-5 rounded-xl border-t-4 border-gray-600 opacity-60 relative">
+                                    <div className="absolute inset-0 flex items-center justify-center z-10"><span className="bg-black/80 text-white text-xs px-2 py-1 rounded border border-gray-500">Coming Soon</span></div>
+                                    <h3 className="font-bold flex gap-2 items-center mb-2"><Icon name="music"/> Music Video</h3>
+                                    <p className="text-xs text-gray-400">Gemini Flow music generation.</p>
+                                </div>
+                                <div className="glass-panel p-5 rounded-xl border-t-4 border-gray-600 opacity-60 relative">
+                                    <div className="absolute inset-0 flex items-center justify-center z-10"><span className="bg-black/80 text-white text-xs px-2 py-1 rounded border border-gray-500">Coming Soon</span></div>
+                                    <h3 className="font-bold flex gap-2 items-center mb-2"><Icon name="box"/> 3D Asset</h3>
+                                    <p className="text-xs text-gray-400">Game-ready .obj files.</p>
+                                </div>
+                            </div>
+
+                            {/* OUTPUTS */}
+                            <div className="mt-8">
+                                <h3 className="text-xl font-bold mb-4 text-gray-300">Generated Assets</h3>
+                                <div className="space-y-3">
+                                    {generatedAssets.map(asset => (
+                                        <div key={asset.id} className="glass-panel p-3 rounded-lg flex gap-4 items-center animate-fade-in">
+                                            <div className="w-16 h-16 bg-gray-900 rounded overflow-hidden flex-shrink-0">
+                                                <img src={asset.image} className="w-full h-full object-cover"/>
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="flex justify-between mb-1">
+                                                    <span className="font-bold text-sm">{asset.type}</span>
+                                                    <span className={`text-[10px] px-2 rounded ${asset.status === 'Completed' ? 'bg-green-900 text-green-300' : 'bg-yellow-900 text-yellow-300'}`}>{asset.status}</span>
+                                                </div>
+                                                {asset.status === 'Completed' && <button onClick={() => downloadAsset(asset)} className="text-[10px] bg-blue-600 hover:bg-blue-500 px-2 py-1 rounded flex gap-1 items-center mt-1"><Icon name="download" size={10}/> Download</button>}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* CHATS */}
+                    <ChatBubble type="therapist" title="AI Therapist" initialMessage="Hello. I'm here to help verify your personality type. How are you feeling today?" />
+                    <ChatBubble type="help" title="LMA Support" initialMessage="Welcome to LMA. I can help explain verification steps or pricing tiers." />
+                    {matchData && matchData.open && <ChatBubble type="match" title={`Chat: ${matchData.name}`} initialMessage="Hey! I saw we matched on LMA. I'm interested in collaborating." onClose={() => setMatchData({...matchData, open: false})} matchData={matchData} />}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
